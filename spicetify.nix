@@ -9,12 +9,13 @@ in
   {
     enable = true;
     theme = spicePkgs.themes.catppuccin;
-    colorScheme = "mocha";
+    colorScheme = "comfy";
 
     enabledExtensions = with spicePkgs.extensions; [
       fullAppDisplay
       shuffle 
       hidePodcasts
+      powerBar
     ];
   };
 }
