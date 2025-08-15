@@ -8,8 +8,7 @@ in
   programs.spicetify =
   {
     enable = true;
-    theme = spicePkgs.themes.catppuccin;
-    colorScheme = "comfy";
+    theme = spicePkgs.themes.comfy;
 
     enabledExtensions = with spicePkgs.extensions; [
       fullAppDisplay
