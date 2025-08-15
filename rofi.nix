@@ -1,0 +1,94 @@
+{ config, lib, pkgs, ... }:
+
+let
+  themeFile = ".config/rofi/themes/my-theme.rasi";
+in
+{
+  options.rofiTheme.enable = lib.mkEnableOption "Enable custom Rofi theme";
+
+  config = lib.mkIf config.rofiTheme.enable {
+    programs.rofi = {
+      enable = true;
+
+      extraConfig = {
+        modes = "combi";
+        combi-modes = "window,drun,run";
+        show-icons = true;
+        icon-theme = "Papirus";
+        drun-display-format = "{icon} {name}";
+      };
+
+      theme = "~/${themeFile}";
+    };
+
+    fonts.fontconfig.enable = true;
+
+    home.packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      papirus-icon-theme
+    ];
+
+    home.file.${themeFile}.text = ''
+      * {
+        font:   "JetBrainsMono Nerd Font Mono Medium 13";
+
+        bg0     : #1a1b26;
+        bg1     : #1f2335;
+        bg2     : #24283b;
+        bg3     : #414868;
+        fg0     : #c0caf5;
+        fg1     : #a9b1d6;
+        fg2     : #737aa2;
+        red     : #f7768e;
+        green   : #9ece6a;
+        yellow  : #e0af68;
+        blue    : #7aa2f7;
+        magenta : #9a7ecc;
+        cyan    : #4abaaf;
+
+        accent: @red;
+        urgent: @yellow;
+
+        background-color : transparent;
+        text-color       : @fg0;
+
+        margin  : 0;
+        padding : 0;
+        spacing : 0;
+      }
+
+      element-icon, element-text, scrollbar {
+        cursor: pointer;
+      }
+
+      window {
+        location : center;
+        width    : 280px;
+
+        background-color: @bg1;
+        border: 1px;
+        border-color: @bg3;
+        border-radius: 6px;
+      }
+
+      inputbar {
+        spacing  : 8px;
+        padding  : 4px 8px;
+        children : [ icon-search, entry ];
+
+        background-color: @bg0;
+      }
+
+      icon-search, entry, element-icon, element-text {
+        vertical-align: 0.5;
+      }
+
+      icon-search {
+        expand   : false;
+        filename : "search-symbolic";
+        size     : 14px;
+      }
+
+      textbox {
+        padding
+

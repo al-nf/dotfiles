@@ -8,6 +8,7 @@
     ./starship.nix
     ./hyprpanel.nix
     ./git.nix
+    ./rofi.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -48,6 +49,7 @@
     pkgs.nh
     pkgs.vesktop
     pkgs.nushell
+    pkgs.papirus-icon-theme
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
