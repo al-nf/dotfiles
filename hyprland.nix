@@ -105,6 +105,7 @@
       windowrule = [
         "opacity 0.8 0.8, floating:0"
         "opacity 0.8 0.8, floating:1"
+        "opacity 1.0 1.0, class:spotify"
         "float, title:^(Picture-in-Picture)$"
         "pin, title:^(Picture-in-Picture)$"
         "workspace special silent, title:^(Firefox — Sharing Indicator)$"

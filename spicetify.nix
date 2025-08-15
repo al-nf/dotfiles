@@ -16,5 +16,7 @@ in
       hidePodcasts
       powerBar
     ];
+    wayland = true;
+    windowManagerPatch = true;
   };
 }
