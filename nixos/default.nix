@@ -108,7 +108,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
-    neovim
     wget
     firefox
     git

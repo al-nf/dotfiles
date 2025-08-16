@@ -11,6 +11,7 @@
     ../modules/programs/rofi.nix
     ../modules/programs/cava.nix
     ../modules/programs/kitty.nix
+    ../modules/programs/neovim.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -34,24 +35,18 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    pkgs.kitty
     pkgs.fastfetch
     pkgs.pavucontrol
     pkgs.ripgrep
-    pkgs.starship
     pkgs.vivid
     pkgs.btop
     pkgs.swww
     pkgs.ffmpeg
     pkgs.corefonts
-    pkgs.rofi-wayland
     pkgs.rose-pine-hyprcursor
-    pkgs.hyprpanel
     pkgs.nh
     pkgs.vesktop
-    pkgs.nushell
     pkgs.papirus-icon-theme
-    pkgs.cava
     pkgs.gh
     pkgs.nerd-fonts.jetbrains-mono
 

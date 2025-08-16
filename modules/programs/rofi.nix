@@ -9,6 +9,7 @@ in
   config = lib.mkIf config.rofiTheme.enable {
     programs.rofi = {
       enable = true;
+      package = pkgs.rofi-wayland;
 
       extraConfig = {
         modes = "combi";
