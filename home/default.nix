@@ -3,13 +3,13 @@
 {
   imports = 
   [
-    ./modules/hyprland.nix
-    ./modules/nushell.nix
-    ./modules/starship.nix
-    ./modules/hyprpanel.nix
-    ./modules/git.nix
-    ./modules/rofi.nix
-    ./modules/cava.nix
+    ../modules/hyprland.nix
+    ../modules/nushell.nix
+    ../modules/starship.nix
+    ../modules/hyprpanel.nix
+    ../modules/git.nix
+    ../modules/rofi.nix
+    ../modules/cava.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

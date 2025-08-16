@@ -36,7 +36,7 @@
           modules = [ 
             ./home
 
-            ./home/modules/spicetify.nix
+            ./modules/spicetify.nix
           ];
         };
       };
