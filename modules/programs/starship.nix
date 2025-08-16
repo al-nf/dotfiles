@@ -35,6 +35,8 @@
       format = "$all";
       os = {
         disabled = false;
+        format = " ($style)";
+        style = "blue bold";
       };
       username = {
         format = "[$user]($style) ";

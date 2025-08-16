@@ -2,13 +2,15 @@
 {
   programs.kitty = {
     enable = true;
-    extraConfig = ''
 
-    cursor_trail 3
+    extraConfig = ''
 
     font_family      JetBrainsMono Nerd Font Mono
     bold_font        JetBrainsMono Nerd Font Mono Bold
     bold_italic_font JetBrainsMono Nerd Font Mono Bold Italic
+    font_size 12.0
+
+    cursor_trail 3
 
     foreground              #cdd6f4
     background              #1e1e2e
@@ -72,6 +74,8 @@
     # white
     color7  #bac2de
     color15 #a6adc8
+
+    window_padding_width 5
     '';
   };
 }
