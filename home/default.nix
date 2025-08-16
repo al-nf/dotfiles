@@ -13,6 +13,7 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nix.package = pkgs.nix;
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -51,6 +52,7 @@
     pkgs.nushell
     pkgs.papirus-icon-theme
     pkgs.cava
+    pkgs.gh
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

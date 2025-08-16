@@ -5,8 +5,8 @@
     shellAliases = {
       vi = "nvim";
       vim = "nvim";
-      hmcfg = "cd ~/.config/home-manager";
-      hmsw = "home-manager switch";
+      hmcfg = "cd ~/.dots/home";
+      hmsw = "home-manager switch --flake ~/.dots";
       gaa = "git add --all";
       gca = "git commit -a";
     };
