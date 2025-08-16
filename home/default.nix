@@ -1,19 +1,19 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = 
   [
-    ../modules/hyprland.nix
-    ../modules/nushell.nix
-    ../modules/starship.nix
-    ../modules/hyprpanel.nix
-    ../modules/git.nix
-    ../modules/rofi.nix
-    ../modules/cava.nix
+    ../modules/programs/hyprland.nix
+    ../modules/programs/nushell.nix
+    ../modules/programs/starship.nix
+    ../modules/programs/hyprpanel.nix
+    ../modules/programs/git.nix
+    ../modules/programs/rofi.nix
+    ../modules/programs/cava.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nix.package = pkgs.nix;
+  nix.package = lib.mkDefault pkgs.nix;
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Home Manager needs a bit of information about you and the paths it should
