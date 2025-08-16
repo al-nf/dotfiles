@@ -10,6 +10,7 @@
     ../modules/programs/git.nix
     ../modules/programs/rofi.nix
     ../modules/programs/cava.nix
+    ../modules/programs/kitty.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -33,8 +34,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    pkgs.ghostty
-    pkgs.neovim
+    pkgs.kitty
     pkgs.fastfetch
     pkgs.pavucontrol
     pkgs.ripgrep
@@ -53,6 +53,7 @@
     pkgs.papirus-icon-theme
     pkgs.cava
     pkgs.gh
+    pkgs.nerd-fonts.jetbrains-mono
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -104,7 +105,6 @@
   };
 
   programs.home-manager.enable = true;
-  programs.ghostty.enable = true;
   services.hyprpaper.enable = true;
 
 }

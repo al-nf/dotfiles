@@ -9,6 +9,7 @@
       ];
       exec-once = [
         "swww-daemon"
+        "swww-img ~/Pictures/walls/jingliu.png"
         "hyprpanel"
         "hyprctl setcursor rose-pine-hyprcursor 24"
       ];
@@ -21,7 +22,7 @@
       [
         "$mod, W, togglefloating"
         "$mod, F, exec, firefox"
-        "$mod, T, exec, ghostty"
+        "$mod, T, exec, kitty"
         "$mod, Q, killactive"
 
         "$mod, left, movefocus, l"
