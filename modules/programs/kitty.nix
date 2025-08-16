@@ -5,9 +5,9 @@
 
     extraConfig = ''
 
-    font_family      JetBrainsMono Nerd Font Mono
-    bold_font        JetBrainsMono Nerd Font Mono Bold
-    bold_italic_font JetBrainsMono Nerd Font Mono Bold Italic
+    font_family      JetBrainsMono Nerd Font
+    bold_font        JetBrainsMono Nerd Font Bold
+    bold_italic_font JetBrainsMono Nerd Font Bold Italic
     font_size 12.0
 
     cursor_trail 3
