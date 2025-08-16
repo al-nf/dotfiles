@@ -12,8 +12,8 @@
         source = "auto";
       };
       output = {
-        channels = mono;
+        channels = "mono";
       };
     };
   };
-};
+}
