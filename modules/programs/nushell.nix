@@ -11,7 +11,7 @@
       gca = "git commit -a";
     };
     extraConfig = ''
-      source ./../nushell/catppuccin_mocha.nu
+      source ~/.dots/modules/programs/nushell/catppuccin_mocha.nu
       $env.LS_COLORS = (vivid generate catppuccin-mocha)
       $env.config = {
         show_banner: false,
