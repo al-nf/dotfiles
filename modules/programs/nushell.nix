@@ -6,7 +6,6 @@
       vi = "nvim";
       vim = "nvim";
       hmcfg = "cd ~/.dots/home";
-      hmsw = "home-manager switch --flake ~/.dots";
       gaa = "git add --all";
       gca = "git commit -a";
     };
@@ -17,6 +16,7 @@
         show_banner: false,
         buffer_editor: "nvim",
       }
+      def hmsw [] { home-manager switch --flake $".dots#(hostname | str replace '.local' "")" }
     '';
   };
 }
