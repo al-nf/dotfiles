@@ -7,6 +7,8 @@
       vim = "nvim";
       gaa = "git add --all";
       gca = "git commit -a";
+      gp = "git push";
+      gl = "git pull";
     };
     extraConfig = ''
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.nix-profile/bin")
