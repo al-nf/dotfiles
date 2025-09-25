@@ -42,6 +42,7 @@
     pkgs.nerd-fonts.jetbrains-mono
     pkgs.vscodium
     pkgs.gcc
+    pkgs.lua
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
