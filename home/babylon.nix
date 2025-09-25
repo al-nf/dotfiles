@@ -9,6 +9,7 @@
     ../modules/programs/cava.nix
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
+    ../modules/programs/zed.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -39,6 +40,8 @@
     pkgs.nh
     pkgs.gh
     pkgs.nerd-fonts.jetbrains-mono
+    pkgs.vscodium
+    pkgs.gcc
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
