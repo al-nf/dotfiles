@@ -49,6 +49,9 @@
     pkgs.papirus-icon-theme
     pkgs.gh
     pkgs.nerd-fonts.jetbrains-mono
+    pkgs.zoxide
+    pkgs.fzf
+    pkgs.carapace
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

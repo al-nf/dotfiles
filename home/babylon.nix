@@ -40,9 +40,27 @@
     pkgs.nh
     pkgs.gh
     pkgs.nerd-fonts.jetbrains-mono
-    pkgs.vscodium
+    pkgs.vscode
     pkgs.gcc
     pkgs.lua
+    pkgs.asm-lsp
+    pkgs.rustup
+    pkgs.go
+    pkgs.python313
+    pkgs.python313Packages.pip
+    pkgs.virtualenv
+    pkgs.bun
+    pkgs.devenv
+    pkgs.direnv
+    pkgs.libiconv
+    pkgs.zoxide
+    pkgs.fzf
+    pkgs.carapace
+    pkgs.nodejs
+    pkgs.clang-tools
+    pkgs.awscli2
+    pkgs.awsebcli
+
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
