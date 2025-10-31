@@ -5,6 +5,12 @@
   programs.direnv = {
     enable = true;
   };
+  /*
+      def update-resume [] {
+        rm -f ~/Documents/impt/Alan_Fung_Resume.pdf
+        mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt
+      }
+      */
 
   programs.nushell = {
     enable = true;
@@ -15,6 +21,7 @@
       gca = "git commit -a";
       gp = "git push";
       gl = "git pull";
+      update-resume = "mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt/Alan_Fung_Resume.pdf";
       cd = "z";
     };
     extraConfig = ''
@@ -25,10 +32,7 @@
       def hmsw [] {
         home-manager switch --flake $"($env.HOME)/.dots#(hostname | str replace '.local' "")"
       }
-      def update-resume [] {
-        rm -f ~/Documents/impt/Alan_Fung_Resume.pdf
-        mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt
-      }
+    
     '';
     envFile.text = ''
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.nix-profile/bin")
