@@ -74,15 +74,15 @@
         format = ''[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'';
       };
 
-      nodejs  = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      c       = { symbol = " "; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      rust    = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      golang  = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      php     = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      java    = { symbol = " "; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      kotlin  = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      haskell = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
-      python  = { symbol = ""; style = "bg:green"; format = "[$symbol($version)]($style)"; };
+      nodejs  = { symbol = ""; style = "bg:green fg:crust";format = "[$symbol($version)]($style)"; };
+      c       = { symbol = " "; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      rust    = { symbol = ""; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      golang  = { symbol = ""; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      php     = { symbol = ""; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      java    = { symbol = " "; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      kotlin  = { symbol = ""; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      haskell = { symbol = ""; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
+      python  = { symbol = ""; style = "bg:green fg:crust"; format = "[$symbol($version)]($style)"; };
 
 
       docker_context = { symbol = ""; style = "bg:sapphire"; format = ''[[ $symbol( $context) ]](fg:crust bg:sapphire)($style)''; };
