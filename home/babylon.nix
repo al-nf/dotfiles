@@ -10,6 +10,7 @@
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
     ../modules/programs/zed.nix
+    ../modules/programs/ssh.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -39,9 +40,9 @@
     pkgs.btop
     pkgs.nh
     pkgs.gh
+    pkgs.gcc
     pkgs.nerd-fonts.jetbrains-mono
     pkgs.vscode
-    pkgs.gcc
     pkgs.lua
     pkgs.asm-lsp
     pkgs.rustup
@@ -60,7 +61,6 @@
     pkgs.clang-tools
     pkgs.awscli2
     pkgs.awsebcli
-
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
