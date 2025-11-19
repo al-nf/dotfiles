@@ -34,11 +34,11 @@
         ];
       };
 
-      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.pharos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.default
-          ./nixos/wsl.nix
+          ./nixos/pharos.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -65,7 +65,7 @@
           ];
         };
 
-        wsl = home-manager.lib.homeManagerConfiguration {
+        pharos = home-manager.lib.homeManagerConfiguration {
           pkgs = forSystem "x86_64-linux";
           modules = [
             ./home/pharos.nix

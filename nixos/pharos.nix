@@ -5,13 +5,6 @@
   wsl.enable = true;
   wsl.defaultUser = "afung";
   
-  # Use the latest WSL kernel
-  wsl.nativeSystemd = true;
-  
-  # Enable Windows interop
-  wsl.interop.enabled = true;
-  wsl.interop.includePath = true;
-
   # Set hostname
   networking.hostName = "pharos";
 
