@@ -23,6 +23,7 @@
       gl = "git pull";
       update-resume = "mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt/Alan_Fung_Resume.pdf";
       cd = "z";
+      ssh = "kitten ssh";
     };
     extraConfig = ''
       source ~/.dots/modules/programs/nushell/catppuccin_mocha.nu
