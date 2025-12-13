@@ -14,7 +14,9 @@
     ../modules/programs/neovim.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
   nix.package = lib.mkDefault pkgs.nix;
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -49,6 +51,13 @@
     pkgs.papirus-icon-theme
     pkgs.gh
     pkgs.nerd-fonts.jetbrains-mono
+    pkgs.rofi
+    pkgs.woeusb
+    pkgs.ntfs3g
+    pkgs.parted
+    pkgs.wimlib
+    pkgs.popsicle
+
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

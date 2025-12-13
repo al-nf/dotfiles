@@ -13,7 +13,12 @@
   outputs = { nixpkgs, home-manager, spicetify-nix, ... }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs { 
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
     in {
       nixosConfigurations.petra = nixpkgs.lib.nixosSystem {
         inherit system;
@@ -34,7 +39,6 @@
           extraSpecialArgs = {inherit spicetify-nix;};
           modules = [ 
             ./home
-
             ./modules/programs/spicetify.nix
           ];
         };

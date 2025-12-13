@@ -89,7 +89,7 @@
     isNormalUser = true;
     description = "Alan Fung";
     shell = pkgs.nushell;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "vboxusers"];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -98,9 +98,18 @@
   programs.firefox.enable = true;
   programs.hyprland.enable = true;
   programs.zsh.enable = true;
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; 
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "ventoy-1.1.05"
+  ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -115,6 +124,8 @@
     efibootmgr
     gcc
     nushell
+    grub2
+    fuse3
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -125,6 +136,10 @@
   #   enableSSHSupport = true;
   # };
 
+  virtualisation.virtualbox.host = {
+    enable = true;
+  };
+  
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
