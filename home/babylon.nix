@@ -61,6 +61,8 @@
     pkgs.clang-tools
     pkgs.awscli2
     pkgs.awsebcli
+    pkgs.tailscale
+    pkgs.hyperfine
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
