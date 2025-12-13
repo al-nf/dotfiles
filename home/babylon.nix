@@ -3,27 +3,24 @@
 {
   imports = 
   [
-    ../modules/programs/hyprland.nix
     ../modules/programs/nushell.nix
     ../modules/programs/starship.nix
-    ../modules/programs/hyprpanel.nix
     ../modules/programs/git.nix
-    ../modules/programs/rofi.nix
     ../modules/programs/cava.nix
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
+    ../modules/programs/zed.nix
+    ../modules/programs/ssh.nix
   ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
+  nixpkgs.config.allowUnfree = true;
   nix.package = lib.mkDefault pkgs.nix;
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "afung";
-  home.homeDirectory = "/home/afung";
+  home.homeDirectory = "/Users/afung";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -38,26 +35,34 @@
   # environment.
   home.packages = [
     pkgs.fastfetch
-    pkgs.pavucontrol
     pkgs.ripgrep
     pkgs.vivid
     pkgs.btop
-    pkgs.swww
-    pkgs.ffmpeg
-    pkgs.corefonts
-    pkgs.rose-pine-hyprcursor
     pkgs.nh
-    pkgs.vesktop
-    pkgs.papirus-icon-theme
     pkgs.gh
+    pkgs.gcc
     pkgs.nerd-fonts.jetbrains-mono
-    pkgs.rofi
-    pkgs.woeusb
-    pkgs.ntfs3g
-    pkgs.parted
-    pkgs.wimlib
-    pkgs.popsicle
-
+    pkgs.vscode
+    pkgs.lua
+    pkgs.asm-lsp
+    pkgs.rustup
+    pkgs.go
+    pkgs.python313
+    pkgs.python313Packages.pip
+    pkgs.virtualenv
+    pkgs.bun
+    pkgs.devenv
+    pkgs.direnv
+    pkgs.libiconv
+    pkgs.zoxide
+    pkgs.fzf
+    pkgs.carapace
+    pkgs.nodejs
+    pkgs.clang-tools
+    pkgs.awscli2
+    pkgs.awsebcli
+    pkgs.tailscale
+    pkgs.hyperfine
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -109,6 +114,4 @@
   };
 
   programs.home-manager.enable = true;
-  services.hyprpaper.enable = true;
-
 }

@@ -3,6 +3,9 @@
   programs.kitty = {
     enable = true;
 
+    settings = {
+      shell = "${pkgs.nushell}/bin/nu";
+    };
     extraConfig = ''
 
     font_family      JetBrainsMono Nerd Font

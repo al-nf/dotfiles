@@ -45,7 +45,7 @@
         show_always = true;
         style_user = "bg:red fg:crust";
         style_root = "bg:red fg:crust";
-        format = ''[ $user]($style)'';
+        format = ''[ $user ]($style)'';
       };
 
       directory = {
@@ -74,15 +74,16 @@
         format = ''[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'';
       };
 
-      nodejs = { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      c      = { symbol = " "; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      rust   = { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      golang = { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      php    = { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      java   = { symbol = " "; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      kotlin = { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      haskell= { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version) ]](fg:crust bg:green)($style)''; };
-      python = { symbol = ""; style = "bg:green"; format = ''[[ $symbol( $version)(\(#$virtualenv\)) ]](fg:crust bg:green)($style)''; };
+      nodejs  = { symbol = ""; style = "bg:green fg:crust";format = "[ $symbol($version) ]($style)"; };
+      c       = { symbol = " "; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      rust    = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      golang  = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      php     = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      java    = { symbol = " "; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      kotlin  = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      haskell = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      python  = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+
 
       docker_context = { symbol = ""; style = "bg:sapphire"; format = ''[[ $symbol( $context) ]](fg:crust bg:sapphire)($style)''; };
       conda = { symbol = "  "; style = "fg:crust bg:sapphire"; format = ''[$symbol$environment ]($style)''; ignore_base = false; };
