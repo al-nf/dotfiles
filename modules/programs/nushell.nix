@@ -51,6 +51,7 @@
       mkdir $"($nu.cache-dir)"
       carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
 
+      $env._ZO_DOCTOR = 0
       zoxide init nushell | save -f ~/.zoxide.nu
     '';
   };
