@@ -14,10 +14,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    spicetify.url = "github:Gerg-L/spicetify-nix";
+    zen-browser.url = "github:al-nf/zen-flake";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, spicetify-nix, ... }:
+  outputs = { self, nixpkgs, home-manager, nixos-wsl, spicetify, zen-browser, ... }:
     let
       forSystem = system: import nixpkgs { inherit system; };
     in {
@@ -51,7 +52,7 @@
       homeConfigurations = {
         petra = home-manager.lib.homeManagerConfiguration {
           pkgs = forSystem "x86_64-linux";
-          extraSpecialArgs = { inherit spicetify-nix; };
+          extraSpecialArgs = { inherit spicetify zen-browser; };
           modules = [
             ./home/petra.nix
             ./modules/programs/spicetify.nix
