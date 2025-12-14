@@ -4,7 +4,7 @@
     enable = true;
 
     settings = {
-      shell = "${pkgs.nushell}/bin/nu";
+      shell = "nu";
     };
     extraConfig = ''
 
@@ -13,6 +13,7 @@
     bold_italic_font JetBrainsMono Nerd Font Bold Italic
     font_size 12.0
 
+    linux_display_server x11
     cursor_trail 3
 
     foreground              #cdd6f4

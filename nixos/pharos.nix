@@ -41,7 +41,7 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # System packages
-  environment.systemPackages = with pkgs; [
+  environment.stdenv.hostPlatform.systemPackages = with pkgs; [
     vim
     wget
     git
@@ -60,7 +60,7 @@
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  system.stateVersion = "25.05";
+  # on your stdenv.hostPlatform.system were taken. It's perfectly fine and recommended to leave
+  # this value at the release version of the first install of this stdenv.hostPlatform.system.
+  stdenv.hostPlatform.system.stateVersion = "25.05";
 }

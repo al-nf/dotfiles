@@ -17,7 +17,7 @@
       buffer_font_size = 15;
       
       theme = {
-        mode = "system";
+        mode = "stdenv.hostPlatform.system";
         light = "One Light";
         dark = "Catppuccin Mocha";
       };

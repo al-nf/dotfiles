@@ -1,4 +1,4 @@
-{ config, pkgs, lib, zen-browser, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = 
@@ -54,9 +54,8 @@
     pkgs.zoxide
     pkgs.fzf
     pkgs.carapace
-
-    zen-browser.packages."x86_64-linux".zen-browser
-
+    pkgs.tailscale
+    pkgs.gnumake
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -108,5 +107,4 @@
 
   programs.home-manager.enable = true;
   services.hyprpaper.enable = true;
-
 }

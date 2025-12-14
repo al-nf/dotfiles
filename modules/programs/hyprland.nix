@@ -104,6 +104,7 @@
         enabled = true;
       };
       windowrule = [
+        "tile, class:kitty"
         "opacity 0.8 0.8, floating:0"
         "opacity 0.8 0.8, floating:1"
         "opacity 1.0 1.0, class:spotify"
