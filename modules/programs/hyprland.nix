@@ -21,7 +21,7 @@
       bind =
       [
         "$mod, W, togglefloating"
-        "$mod, F, exec, firefox"
+        "$mod, F, exec, zen"
         "$mod, T, exec, kitty"
         "$mod, Q, killactive"
 

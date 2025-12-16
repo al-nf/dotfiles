@@ -20,32 +20,34 @@
     };
 
     zen = {
-      url = "github:al-nf/zen-flake";
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    helium = {
+      url = "github:ominit/helium-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
   };
 
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, spicetify, zen, ... }:
+  outputs = { self, nixpkgs, home-manager, nixos-wsl, spicetify, helium, zen, ... }:
     let
       forSystem = system: import nixpkgs { inherit system; };
     in {
       nixosConfigurations.petra = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        overlays = [
-          (self: super: {
-            libsForQt5 = super.libsForQt5 // {
-              fcitx5-with-addons = super.fcitx5;
-            };
-          })
-        ];
         modules = [
           ./nixos
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+
+            home-manager.extraSpecialArgs = {
+              inherit spicetify helium zen;
+            };
             home-manager.users.afung = import ./home/petra.nix;
           }
         ];
@@ -68,7 +70,7 @@
       homeConfigurations = {
         petra = home-manager.lib.homeManagerConfiguration {
           pkgs = forSystem "x86_64-linux";
-          extraSpecialArgs = { inherit spicetify zen; };
+          extraSpecialArgs = { inherit spicetify helium zen; };
           modules = [
             ./home/petra.nix
             ./modules/programs/spicetify.nix

@@ -107,9 +107,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "ventoy-1.1.05"
-  ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -136,14 +133,23 @@
   #   enableSSHSupport = true;
   # };
 
-  virtualisation.virtualbox.host = {
-    enable = true;
+  virtualisation = {
+    virtualbox.host = {
+      enable = true;
+    };
   };
   
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "yes";
+    passwordAuthentication = true;
+  };
+
+  # Enable Tailscale
+  services.tailscale.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
