@@ -39,6 +39,7 @@
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.nix-profile/bin")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"/nix/var/nix/profiles/default/bin")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"/opt/homebrew/bin")
+      $env.PATH = ($env.PATH | split row (char esep) | prepend $"/Applications/flutter/bin")
       $env.LIBRARY_PATH = []
       $env.C_INCLUDE_PATH = []
       $env.LIBRARY_PATH = ($env.LIBRARY_PATH | split row (char esep) | prepend $"/opt/homebrew/opt/libiconv/lib")
