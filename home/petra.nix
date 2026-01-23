@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, helium, zen, ... }:
 
 {
   imports = 
@@ -14,7 +14,9 @@
     ../modules/programs/neovim.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
   nix.package = lib.mkDefault pkgs.nix;
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -52,6 +54,12 @@
     pkgs.zoxide
     pkgs.fzf
     pkgs.carapace
+    pkgs.tailscale
+    pkgs.gnumake
+    pkgs.rofi
+    pkgs.gh
+
+    zen.packages.x86_64-linux.beta
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -104,5 +112,4 @@
 
   programs.home-manager.enable = true;
   services.hyprpaper.enable = true;
-
 }

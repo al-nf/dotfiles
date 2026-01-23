@@ -2,10 +2,10 @@
   description = "NixOS + macOS dotfiles";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/25.11";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -14,10 +14,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    spicetify = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    helium = {
+      url = "github:ominit/helium-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, spicetify-nix, ... }:
+
+  outputs = { self, nixpkgs, home-manager, nixos-wsl, spicetify, helium, zen, ... }:
     let
       forSystem = system: import nixpkgs { inherit system; };
     in {
@@ -29,7 +44,11 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.afung = import ./home;
+
+            home-manager.extraSpecialArgs = {
+              inherit spicetify helium zen;
+            };
+            home-manager.users.afung = import ./home/petra.nix;
           }
         ];
       };
@@ -51,7 +70,7 @@
       homeConfigurations = {
         petra = home-manager.lib.homeManagerConfiguration {
           pkgs = forSystem "x86_64-linux";
-          extraSpecialArgs = { inherit spicetify-nix; };
+          extraSpecialArgs = { inherit spicetify helium zen; };
           modules = [
             ./home/petra.nix
             ./modules/programs/spicetify.nix

@@ -2,7 +2,11 @@
 {
   programs.git = {
     enable = true;
-    userName = "Alan Fung";
-    userEmail = "alankjfung@gmail.com";
+    settings = {
+      user = {
+        name = "Alan Fung";
+        email = "alankjfung@gmail.com";
+      };
+    };
   };
 }
