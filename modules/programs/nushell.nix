@@ -40,6 +40,8 @@
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"/nix/var/nix/profiles/default/bin")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"/opt/homebrew/bin")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"/Applications/flutter/bin")
+      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.docker")
+      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.local/bin")
       $env.LIBRARY_PATH = []
       $env.C_INCLUDE_PATH = []
       $env.LIBRARY_PATH = ($env.LIBRARY_PATH | split row (char esep) | prepend $"/opt/homebrew/opt/libiconv/lib")
@@ -54,6 +56,8 @@
 
       $env._ZO_DOCTOR = 0
       zoxide init nushell | save -f ~/.zoxide.nu
+
+      $env.VIRTUAL_ENV_DISABLE_PROMPT = 1
     '';
   };
 }

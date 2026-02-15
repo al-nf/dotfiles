@@ -82,7 +82,7 @@
       java    = { symbol = " "; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
       kotlin  = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
       haskell = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
-      python  = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ]($style)"; };
+      python  = { symbol = ""; style = "bg:green fg:crust"; format = "[ $symbol($version) ($virtualenv) ]($style)"; };
 
 
       docker_context = { symbol = ""; style = "bg:sapphire"; format = ''[[ $symbol( $context) ]](fg:crust bg:sapphire)($style)''; };
