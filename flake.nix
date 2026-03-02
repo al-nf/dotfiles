@@ -2,10 +2,10 @@
   description = "NixOS + macOS dotfiles";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/25.11";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

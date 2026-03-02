@@ -6,10 +6,8 @@
     ../modules/programs/nushell.nix
     ../modules/programs/starship.nix
     ../modules/programs/git.nix
-    ../modules/programs/cava.nix
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
-    ../modules/programs/zed.nix
     ../modules/programs/ssh.nix
   ];
 
@@ -49,6 +47,7 @@
     pkgs.go
     pkgs.python313
     pkgs.python313Packages.pip
+    pkgs.uv
     pkgs.virtualenv
     pkgs.bun
     pkgs.devenv
@@ -63,6 +62,13 @@
     pkgs.awsebcli
     pkgs.tailscale
     pkgs.hyperfine
+    pkgs.docker
+    pkgs.typst
+    pkgs.bear
+    pkgs.meson
+    pkgs.wget
+    pkgs.ninja
+    pkgs.mosh
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

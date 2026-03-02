@@ -59,6 +59,7 @@
     pkgs.rofi
     pkgs.gh
     pkgs.vencord
+    pkgs.mosh
 
     zen.packages.x86_64-linux.beta
 
