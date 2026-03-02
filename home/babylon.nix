@@ -8,7 +8,6 @@
     ../modules/programs/git.nix
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
-    ../modules/programs/zed.nix
     ../modules/programs/ssh.nix
   ];
 
@@ -66,6 +65,10 @@
     pkgs.docker
     pkgs.typst
     pkgs.bear
+    pkgs.meson
+    pkgs.wget
+    pkgs.ninja
+    pkgs.mosh
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
