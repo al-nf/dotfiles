@@ -58,6 +58,7 @@
     pkgs.gnumake
     pkgs.rofi
     pkgs.gh
+    pkgs.vencord
 
     zen.packages.x86_64-linux.beta
 
