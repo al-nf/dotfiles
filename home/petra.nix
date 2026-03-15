@@ -12,6 +12,9 @@
     ../modules/programs/cava.nix
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
+    ../modules/programs/ollama.nix
+    ../modules/programs/zed.nix
+    ../modules/programs/direnv.nix
   ];
 
   nixpkgs.config = {
@@ -60,6 +63,19 @@
     pkgs.gh
     pkgs.vencord
     pkgs.mosh
+    pkgs.rustup
+    pkgs.devenv
+    pkgs.zed-editor
+    pkgs.uv
+    pkgs.ruff
+    pkgs.unzip
+    pkgs.gccNGPackages_15.libstdcxx
+    pkgs.zlib
+    pkgs.bun
+
+    pkgs.python313
+    pkgs.python313Packages.gpustat
+
 
     zen.packages.x86_64-linux.beta
 

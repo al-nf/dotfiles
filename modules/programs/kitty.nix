@@ -4,7 +4,7 @@
     enable = true;
 
     settings = {
-      shell = "/Users/afung/.nix-profile/bin/nu";
+      shell = "nu";
     };
     extraConfig = ''
 

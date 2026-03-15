@@ -24,6 +24,7 @@
       update-resume = "mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt/Alan_Fung_Resume.pdf";
       cd = "z";
       ssh = "kitten ssh";
+      zed = "zeditor";
     };
     extraConfig = ''
       source ~/.dots/modules/programs/nushell/catppuccin_mocha.nu
@@ -42,10 +43,16 @@
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"/Applications/flutter/bin")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.docker")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.local/bin")
+      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.cargo/bin")
+
       $env.LIBRARY_PATH = []
       $env.C_INCLUDE_PATH = []
+      $env.LD_LIBRARY_PATH = []
+
       $env.LIBRARY_PATH = ($env.LIBRARY_PATH | split row (char esep) | prepend $"/opt/homebrew/opt/libiconv/lib")
       $env.C_INCLUDE_PATH = ($env.C_INCLUDE_PATH | split row (char esep) | prepend $"/opt/homebrew/opt/libiconv/include")
+      $env.LD_LIBRARY_PATH = ($env.LD_LIBRARY_PATH | split row (char esep) | prepend $"($env.HOME)/.nix-profile/lib")
+
       $env.LS_COLORS = (vivid generate catppuccin-mocha)
       $env.config = {
         show_banner: false,

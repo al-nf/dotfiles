@@ -104,14 +104,37 @@
         enabled = true;
       };
       windowrule = [
-        "tile, class:kitty"
-        "opacity 0.8 0.8, floating:0"
-        "opacity 0.8 0.8, floating:1"
-        "opacity 1.0 1.0, class:spotify"
-        "opacity 1.0 1.0, class:firefox"
-        "float, title:^(Picture-in-Picture)$"
-        "pin, title:^(Picture-in-Picture)$"
-        "workspace special silent, title:^(Firefox — Sharing Indicator)$"
+        {
+          name = "default opacity";
+          match.title = ".*";
+          opacity = "0.8 0.8";
+        }
+        {
+          name = "tile kitty";
+          match.class = "kitty";
+          tile = true;
+        }
+        {
+          name = "spotify";
+          match.class = "spotify";
+          opacity = "1.0 1.0";
+        }
+        {
+          name = "zen";
+          match.class = "zen-beta";
+          opacity = "1.0 1.0";
+        }
+        {
+          name = "zen pip";
+          match.title = "^(Picture-in-Picture)$";
+          float = true;
+          pin = true;
+        }
+        {
+          name = "sharing indicator";
+          match.title = "Sharing Indicator";
+          workspace = "special silent";
+        }
       ];
 
       general = {

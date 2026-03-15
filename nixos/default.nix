@@ -10,6 +10,16 @@
       ./hardware-configuration.nix
     ];
 
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.graphics.enable = true;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.enable = true;
@@ -108,7 +118,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    trusted-users = [ "root" "afung" ];
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -133,11 +146,13 @@
   #   enableSSHSupport = true;
   # };
 
+  /*
   virtualisation = {
     virtualbox.host = {
       enable = true;
     };
   };
+  */
   
   # List services that you want to enable:
 
