@@ -72,6 +72,7 @@
     pkgs.gccNGPackages_15.libstdcxx
     pkgs.zlib
     pkgs.bun
+    pkgs.zellij
 
     pkgs.python313
     pkgs.python313Packages.gpustat
