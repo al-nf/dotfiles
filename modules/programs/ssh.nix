@@ -10,6 +10,10 @@
       Host ecc
           Hostname linux.dc.engr.scu.edu
           User afung
+
+      Host zeus
+          Hostname zeus
+          User alanf
     '';
   };
 }
