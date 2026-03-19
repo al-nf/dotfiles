@@ -138,6 +138,10 @@
     fuse3
   ];
 
+  services.logind.settings.Login = {
+    IdleAction = "ignore";
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
