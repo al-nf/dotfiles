@@ -28,7 +28,7 @@
       url = "github:ominit/helium-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
   };
 
 
@@ -70,7 +70,7 @@
       homeConfigurations = {
         petra = home-manager.lib.homeManagerConfiguration {
           pkgs = forSystem "x86_64-linux";
-          extraSpecialArgs = { inherit spicetify helium zen; };
+          extraSpecialArgs = { inherit spicetify helium zen ; };
           modules = [
             ./home/petra.nix
             ./modules/programs/spicetify.nix

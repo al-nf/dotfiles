@@ -1,5 +1,11 @@
 { config, pkgs, lib, helium, zen, ... }:
-
+let
+  py = (pkgs.python313.withPackages (
+    ps: with ps; [
+      gpustat
+    ]
+));
+in
 {
   imports = 
   [
@@ -39,44 +45,49 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    pkgs.fastfetch
-    pkgs.pavucontrol
-    pkgs.ripgrep
-    pkgs.vivid
-    pkgs.btop
-    pkgs.swww
-    pkgs.ffmpeg
-    pkgs.corefonts
-    pkgs.rose-pine-hyprcursor
-    pkgs.nh
-    pkgs.vesktop
-    pkgs.papirus-icon-theme
-    pkgs.gh
-    pkgs.nerd-fonts.jetbrains-mono
-    pkgs.zoxide
-    pkgs.fzf
-    pkgs.carapace
-    pkgs.tailscale
-    pkgs.gnumake
-    pkgs.rofi
-    pkgs.gh
-    pkgs.vencord
-    pkgs.mosh
-    pkgs.rustup
-    pkgs.devenv
-    pkgs.zed-editor
-    pkgs.uv
-    pkgs.ruff
-    pkgs.unzip
-    pkgs.gccNGPackages_15.libstdcxx
-    pkgs.zlib
-    pkgs.bun
-    pkgs.zellij
+  home.packages = with pkgs;[
+    fastfetch
+    pavucontrol
+    ripgrep
+    vivid
+    btop
+    swww
+    ffmpeg
+    corefonts
+    rose-pine-hyprcursor
+    nh
+    vesktop
+    papirus-icon-theme
+    nerd-fonts.jetbrains-mono
+    zoxide
+    fzf
+    carapace
+    tailscale
+    gnumake
+    rofi
+    gh
+    vencord
+    mosh
+    rustup
+    devenv
+    zed-editor
+    uv
+    ruff
+    unzip
+    gccNGPackages_15.libstdcxx
+    zlib
+    bun
+    zellij
+    fd
+    ripgrep
+    git-lfs
+    nvtopPackages.nvidia
+    desktop-file-utils
+    olympus
+    reptyr
+    codex
 
-    pkgs.python313
-    pkgs.python313Packages.gpustat
-
+    py
 
     zen.packages.x86_64-linux.beta
 
@@ -131,4 +142,14 @@
 
   programs.home-manager.enable = true;
   services.hyprpaper.enable = true;
+
+  xdg.desktopEntries.olympus = {
+    name = "Olympus";
+    comment = "Celeste Mod Manager";
+    exec = "steam-run olympus %u";
+    icon = "olympus";
+    terminal = false;
+    categories = [ "Game" "Application" ];
+    mimeType = [ "x-scheme-handler/everest" ];
+  };
 }

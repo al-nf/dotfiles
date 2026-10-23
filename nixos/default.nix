@@ -18,15 +18,29 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      cudaPackages.cudatoolkit
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.efiSupport = true;
+  boot.loader.limine.enable = true;
+  boot.loader.limine.secureBoot.enable = true;
+  boot.loader.limine.biosDevice = "nodev";
+  boot.loader.limine.efiSupport = true;
+  boot.loader.limine.extraEntries = ''
+    /Windows
+      protocol: efi
+      path: boot():/EFI/Microsoft/Boot/bootmgfw.efi
+  '';
+  boot.loader.limine.maxGenerations = 5;
+  boot.loader.limine.style.interface.resolution = "1920x1080";
+  boot.loader.limine.style.interface.helpHidden = true;
+  boot.loader.limine.style.wallpapers = [ pkgs.nixos-artwork.wallpapers.catppuccin-macchiato.gnomeFilePath ];
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.useOSProber = true;
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -95,14 +109,23 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.afung = {
-    isNormalUser = true;
-    description = "Alan Fung";
-    shell = pkgs.nushell;
-    extraGroups = [ "networkmanager" "wheel" "vboxusers"];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+  users.users = {
+    afung = {
+      isNormalUser = true;
+      description = "Alan Fung";
+      shell = pkgs.nushell;
+      extraGroups = [ "networkmanager" "wheel" "vboxusers"];
+      packages = with pkgs; [
+      ];
+    };
+    ericf = {
+      isNormalUser = true;
+      description = "Eric Fung";
+      shell = pkgs.bash;
+      extraGroups = [ "networkmanager" ];
+      packages = with pkgs; [
+      ];
+    };
   };
 
   programs.firefox.enable = true;
@@ -113,6 +136,12 @@
     remotePlay.openFirewall = true; 
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
+  };
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc.lib
+    ];
   };
 
   # Allow unfree packages
@@ -136,10 +165,17 @@
     nushell
     grub2
     fuse3
+    sbctl
+  ];
+
+  environment.sessionVariables.LD_LIBRARY_PATH = [
+    "${pkgs.stdenv.cc.cc.lib}/lib"
+    "${config.hardware.nvidia.package}/lib"
   ];
 
   services.logind.settings.Login = {
     IdleAction = "ignore";
+    IdleActionSec = "0";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -168,10 +204,33 @@
   };
 
   # Enable Tailscale
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = "--accept-dns";
+  };
+
+  systemd.services.nvidia-gpu-init = {
+    description = "enable nvidia persistence mode and set power limit";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "nvidia-persistenced.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStartPre = ''
+        /run/current-system/sw/bin/nvidia-smi -pm 1
+      '';
+      ExecStart = ''
+        /run/current-system/sw/bin/nvidia-smi -pl 300
+      '';
+    };
+  };
+
+  services.displayManager.gdm.autoSuspend = false;
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedTCPPorts = [];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
