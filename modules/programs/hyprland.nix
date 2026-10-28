@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  desktopMonitor,
+  ...
+}:
 let
   desktop = import ../theme.nix;
   lua = lib.generators.mkLuaInline;
@@ -27,12 +32,7 @@ in
           end
         '')
       ];
-      monitor = {
-        output = "HDMI-A-1";
-        mode = "2560x1440@120";
-        position = "0x0";
-        scale = 1;
-      };
+      monitor = desktopMonitor;
       bind = [
         (bind "W" "hl.dsp.window.float({ action = 'toggle' })")
         (bind "SHIFT + W" "hl.dsp.exec_cmd('wayle panel settings')")

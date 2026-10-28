@@ -114,6 +114,12 @@ in
     subtext0 = "#a6adc8";
     subtext1 = "#bac2de";
     rosewater = "#f5e0dc";
+    flamingo = "#f2cdcd";
+    maroon = "#eba0ac";
+    peach = "#fab387";
+    sky = "#89dceb";
+    overlay1 = "#7f849c";
+    overlay2 = "#9399b2";
     mauve = "#cba6f7";
     lavender = "#b4befe";
     sapphire = "#74c7ec";

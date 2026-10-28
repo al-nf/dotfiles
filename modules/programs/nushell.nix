@@ -45,8 +45,12 @@
       update-resume = "mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt/Alan_Fung_Resume.pdf";
       cd = "z";
       ssh = "kitten ssh";
-      zed = "zeditor";
-    };
+    }
+    //
+      lib.optionalAttrs (config.programs.zed-editor.enable && config.programs.zed-editor.package != null)
+        {
+          zed = lib.getExe config.programs.zed-editor.package;
+        };
     extraConfig = ''
       source ${./nushell/catppuccin_mocha.nu}
 
@@ -63,11 +67,20 @@
       }
 
     '';
-    envFile.text = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
-      $env.LIBRARY_PATH = ($env.LIBRARY_PATH? | default [] | split row (char esep) | prepend "/opt/homebrew/opt/libiconv/lib")
-      $env.C_INCLUDE_PATH = ($env.C_INCLUDE_PATH? | default [] | split row (char esep) | prepend "/opt/homebrew/opt/libiconv/include")
-      $env.LD_LIBRARY_PATH = ($env.LD_LIBRARY_PATH? | default [] | split row (char esep) | prepend $"($env.HOME)/.nix-profile/lib")
-    '' + ''
+    envFile.text = ''
+      # GUI terminals may start without the Nix profiles on PATH.
+      # Set these even when the Home Manager session variables were already loaded.
+      $env.PATH = ($env.PATH | split row (char esep) | prepend [
+        "${config.home.profileDirectory}/bin"
+        "/nix/var/nix/profiles/default/bin"
+      ] | uniq)
+    ''
+    + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+      $env.LIBRARY_PATH = ($env.LIBRARY_PATH? | default [] | split row (char esep) | prepend "/opt/homebrew/opt/libiconv/lib" | uniq)
+      $env.C_INCLUDE_PATH = ($env.C_INCLUDE_PATH? | default [] | split row (char esep) | prepend "/opt/homebrew/opt/libiconv/include" | uniq)
+      $env.LD_LIBRARY_PATH = ($env.LD_LIBRARY_PATH? | default [] | split row (char esep) | prepend $"($env.HOME)/.nix-profile/lib" | uniq)
+    ''
+    + ''
       $env.LS_COLORS = (vivid generate catppuccin-mocha)
       $env.VIRTUAL_ENV_DISABLE_PROMPT = 1
 
