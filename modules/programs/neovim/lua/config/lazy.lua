@@ -1,3 +1,11 @@
+-- Seed a writable lockfile from the version tracked in the dotfiles.
+-- Keep local plugin updates until the user explicitly replaces the lockfile.
+local lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json"
+if not (vim.uv or vim.loop).fs_stat(lockfile) then
+  vim.fn.mkdir(vim.fn.stdpath("data"), "p")
+  vim.fn.writefile(vim.fn.readfile(vim.fn.stdpath("config") .. "/lazy-lock.json"), lockfile)
+end
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -23,7 +31,7 @@ vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
 require("lazy").setup({
-  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json", 
+  lockfile = lockfile,
   spec = {
     -- import your plugins
     { import = "plugins" },

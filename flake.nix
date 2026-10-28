@@ -32,7 +32,6 @@
     let
       petraModules = [
         ./home/petra.nix
-        ./modules/programs/spicetify.nix
       ];
       petraSpecialArgs = { inherit spicetify zen; };
       forSystem =
@@ -43,6 +42,16 @@
         };
     in
     {
+      formatter = nixpkgs.lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ] (system: (forSystem system).nixfmt);
+
+      checks = {
+        x86_64-linux.home-petra = self.homeConfigurations.petra.activationPackage;
+        aarch64-darwin.home-babylon = self.homeConfigurations.babylon.activationPackage;
+      };
+
       nixosConfigurations.petra = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
