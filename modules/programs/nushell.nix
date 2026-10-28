@@ -10,10 +10,12 @@
   home.sessionPath = [
     "${config.home.homeDirectory}/.local/bin"
     "${config.home.homeDirectory}/.cargo/bin"
+    "/usr/local/bin"
   ]
   ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
     "/opt/homebrew/bin"
     "/Applications/flutter/bin"
+    "${config.home.homeDirectory}/.docker"
   ];
 
   programs.zoxide = {
@@ -61,9 +63,25 @@
       }
 
     '';
-    envFile.text = ''
+    envFile.text = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+      $env.LIBRARY_PATH = ($env.LIBRARY_PATH? | default [] | split row (char esep) | prepend "/opt/homebrew/opt/libiconv/lib")
+      $env.C_INCLUDE_PATH = ($env.C_INCLUDE_PATH? | default [] | split row (char esep) | prepend "/opt/homebrew/opt/libiconv/include")
+      $env.LD_LIBRARY_PATH = ($env.LD_LIBRARY_PATH? | default [] | split row (char esep) | prepend $"($env.HOME)/.nix-profile/lib")
+    '' + ''
       $env.LS_COLORS = (vivid generate catppuccin-mocha)
       $env.VIRTUAL_ENV_DISABLE_PROMPT = 1
+
+      if (which opam | is-not-empty) {
+        opam env | lines | reduce -f {} { |line, acc|
+          let parts = ($line | parse "{key}='{val}'; export {_};")
+          if ($parts | is-not-empty) {
+              let row = ($parts | first)
+              $acc | insert $row.key $row.val
+          } else {
+              $acc
+          }
+        } | load-env
+      }
     '';
   };
 }

@@ -8,7 +8,7 @@ in
     enable = true;
 
     settings = {
-      shell = "nu";
+      shell = "${pkgs.nushell}/bin/nu";
       remember_window_size = false;
     };
     extraConfig = ''

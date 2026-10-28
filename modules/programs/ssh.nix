@@ -10,6 +10,14 @@
       Host ecc
           Hostname linux.dc.engr.scu.edu
           User afung
+
+      Host zeus
+          Hostname zeus
+          User afung
+
+      Host braingenix
+          Hostname pve.braingenix.org
+          User afung
     '';
   };
 }
