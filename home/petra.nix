@@ -39,6 +39,8 @@ in
     fastfetch
     pavucontrol
     piper
+    openrgb
+    hyprshot
     ripgrep
     vivid
     btop

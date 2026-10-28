@@ -170,6 +170,8 @@
   services.ratbagd.enable = true;
   services.lact.enable = true;
 
+  services.udev.packages = [ pkgs.openrgb ];
+
   services.udev.extraRules = ''
     ACTION=="add|change", SUBSYSTEM=="powercap", KERNEL=="intel-rapl:0", RUN+="${pkgs.coreutils}/bin/chmod a+r /sys%p/energy_uj"
   '';

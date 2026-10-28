@@ -6,6 +6,7 @@
     enable = true;
     withRuby = false;
     withPython3 = false;
+    extraPackages = [ pkgs.tree-sitter ];
   };
 
   home.file.".config/nvim" = {

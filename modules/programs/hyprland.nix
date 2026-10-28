@@ -7,6 +7,7 @@
 let
   desktop = import ../theme.nix;
   lua = lib.generators.mkLuaInline;
+  screenshot = mode: "hl.dsp.exec_cmd('hyprshot -m ${mode} -o ~/Pictures/Screenshots')";
   bind = keys: dispatcher: {
     _args = [
       "SUPER + ${keys}"
@@ -47,6 +48,14 @@ in
         (bind "A" "hl.dsp.exec_cmd('fuzzel')")
         (bind "bracketright" "hl.dsp.exec_cmd('desktop-theme next')")
         (bind "bracketleft" "hl.dsp.exec_cmd('desktop-theme previous')")
+        (bind "Print" (screenshot "window"))
+        (bind "SHIFT + Print" (screenshot "region"))
+        {
+          _args = [
+            "Print"
+            (lua (screenshot "output"))
+          ];
+        }
         {
           _args = [
             "XF86AudioRaiseVolume"
@@ -179,6 +188,11 @@ in
           match.title = "^(Picture-in-Picture)$";
           float = true;
           pin = true;
+        }
+        {
+          name = "warframe";
+          match.title = "Warframe";
+          opacity = "1.0 1.0";
         }
         {
           name = "sharing indicator";
