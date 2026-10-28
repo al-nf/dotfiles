@@ -13,7 +13,11 @@
 
       Host zeus
           Hostname zeus
-          User alanf
+          User afung
+
+      Host braingenix
+          Hostname pve.braingenix.org
+          User afung
     '';
   };
 }

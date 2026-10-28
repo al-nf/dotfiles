@@ -44,6 +44,7 @@
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.docker")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.local/bin")
       $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.cargo/bin")
+      $env.PATH = ($env.PATH | split row (char esep) | prepend $"/usr/local/bin")
 
       $env.LIBRARY_PATH = []
       $env.C_INCLUDE_PATH = []
@@ -65,6 +66,16 @@
       zoxide init nushell | save -f ~/.zoxide.nu
 
       $env.VIRTUAL_ENV_DISABLE_PROMPT = 1
+
+      opam env | lines | reduce -f {} { |line, acc|
+        let parts = ($line | parse "{key}='{val}'; export {_};")
+        if ($parts | is-not-empty) {
+            let row = ($parts | first)
+            $acc | insert $row.key $row.val
+        } else {
+            $acc
+        }
+      } | load-env
     '';
   };
 }

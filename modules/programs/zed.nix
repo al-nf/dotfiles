@@ -21,6 +21,7 @@
       "html"
       "make"
       "catppuccin-icons"
+      "ocaml"
     ];
     
     userSettings = {

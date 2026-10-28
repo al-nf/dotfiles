@@ -1,5 +1,18 @@
 { config, pkgs, lib, ... }:
-
+let
+  tex = (pkgs.texliveMedium.withPackages (
+    ps: with ps; [
+      amsmath float caption graphics biblatex biber
+    ]
+  ));
+in
+let
+  py = (pkgs.python314.withPackages (
+    ps: with ps; [
+      pip
+    ]
+  ));
+in
 {
   imports = 
   [
@@ -29,47 +42,51 @@
   # release notes.
   home.stateVersion = "25.05"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-    pkgs.fastfetch
-    pkgs.ripgrep
-    pkgs.vivid
-    pkgs.btop
-    pkgs.nh
-    pkgs.gh
-    pkgs.gcc
-    pkgs.nerd-fonts.jetbrains-mono
-    pkgs.vscode
-    pkgs.lua
-    pkgs.asm-lsp
-    pkgs.rustup
-    pkgs.go
-    pkgs.python313
-    pkgs.python313Packages.pip
-    pkgs.uv
-    pkgs.virtualenv
-    pkgs.bun
-    pkgs.devenv
-    pkgs.direnv
-    pkgs.libiconv
-    pkgs.zoxide
-    pkgs.fzf
-    pkgs.carapace
-    pkgs.nodejs
-    pkgs.clang-tools
-    pkgs.awscli2
-    pkgs.awsebcli
-    pkgs.tailscale
-    pkgs.hyperfine
-    pkgs.docker
-    pkgs.typst
-    pkgs.bear
-    pkgs.meson
-    pkgs.wget
-    pkgs.ninja
-    pkgs.mosh
-    pkgs.pandoc
+  home.packages = with pkgs; [
+    fastfetch
+    ripgrep
+    vivid
+    btop
+    nh
+    gh
+    gcc
+    nerd-fonts.jetbrains-mono
+    vscode
+    lua
+    asm-lsp
+    rustup
+    go
+    uv
+    virtualenv
+    bun
+    devenv
+    direnv
+    libiconv
+    zoxide
+    fzf
+    carapace
+    nodejs
+    clang-tools
+    tailscale
+    hyperfine
+    docker
+    typst
+    bear
+    meson
+    wget
+    ninja
+    mosh
+    pandoc
+    ocaml
+    opam
+    sqlite
+    ddgr
+    sc-im
+    tex
+    codex
+    py
+
+
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the

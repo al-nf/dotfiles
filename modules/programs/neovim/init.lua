@@ -15,12 +15,12 @@ vim.cmd("set expandtab")
 vim.cmd("set softtabstop=-1")
 vim.cmd("set incsearch")
 vim.cmd("set cindent")
-vim.cmd("set guicursor=a:hor20")
+vim.cmd("set guicursor=n-v-c:block,i-ci-ve-r-cr:hor20")
 
 require("config.lazy")
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "verilog" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -30,7 +30,7 @@ require'nvim-treesitter.configs'.setup {
   auto_install = true,
 
   -- List of parsers to ignore installing (or "all")
-  ignore_install = { "javascript" },
+  ignore_install = { "javascript", "tex" },
 
   ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
   -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
@@ -51,6 +51,11 @@ require'nvim-treesitter.configs'.setup {
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
+  },
+
+  indent = {
+      enable = true,
+      disable = {"verilog"},
   },
 }
 
@@ -90,13 +95,21 @@ vim.g.mkdp_combine_preview_auto_refresh = 1
 
 -- END MARKDOWN PREVIEW SETTINGS --
 
--- nix 2spacetab
 vim.cmd([[
   augroup NixSettings
     autocmd!
     autocmd FileType nix setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
   augroup END
 ]])
+
+vim.cmd([[
+  augroup VerilogSettings
+    autocmd!
+    autocmd FileType verilog setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
+    autocmd FileType verilog setlocal indentexpr= indentkeys= nocindent nosmartindent autoindent
+  augroup END
+]])
+
 
 -- BEGIN LUALINE --
 
