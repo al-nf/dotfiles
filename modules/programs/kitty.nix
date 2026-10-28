@@ -1,85 +1,89 @@
 { config, pkgs, ... }:
+let
+  desktop = import ../theme.nix;
+  inherit (desktop) colors;
+in
 {
   programs.kitty = {
     enable = true;
 
     settings = {
       shell = "nu";
+      remember_window_size = false;
     };
     extraConfig = ''
 
-    font_family      JetBrainsMono Nerd Font
-    bold_font        JetBrainsMono Nerd Font Bold
-    bold_italic_font JetBrainsMono Nerd Font Bold Italic
-    font_size 12.0
+      font_family      ${desktop.font.family}
+      bold_font        ${desktop.font.family} Bold
+      bold_italic_font ${desktop.font.family} Bold Italic
+      font_size ${toString desktop.font.size}
 
-    linux_display_server x11
-    cursor_trail 3
+      cursor_trail 3
 
-    foreground              #cdd6f4
-    background              #1e1e2e
-    selection_foreground    #1e1e2e
-    selection_background    #f5e0dc
+      foreground              ${colors.text}
+      background              ${colors.base}
+      selection_foreground    ${colors.base}
+      selection_background    ${colors.rosewater}
 
-    cursor                  #f5e0dc
-    cursor_shape underline
-    cursor_text_color       #1e1e2e
+      cursor                  ${colors.rosewater}
+      cursor_shape underline
+      cursor_text_color       ${colors.base}
 
-    url_color               #f5e0dc
+      url_color               ${colors.rosewater}
 
-    active_border_color     #b4befe
-    inactive_border_color   #6c7086
-    bell_border_color       #f9e2af
+      active_border_color     ${colors.lavender}
+      inactive_border_color   ${colors.overlay0}
+      bell_border_color       ${colors.yellow}
 
-    wayland_titlebar_color system
-    macos_titlebar_color system
+      wayland_titlebar_color system
+      macos_titlebar_color system
 
-    active_tab_foreground   #11111b
-    active_tab_background   #cba6f7
-    inactive_tab_foreground #cdd6f4
-    inactive_tab_background #181825
-    tab_bar_background      #11111b
+      active_tab_foreground   ${colors.crust}
+      active_tab_background   ${colors.mauve}
+      inactive_tab_foreground ${colors.text}
+      inactive_tab_background ${colors.mantle}
+      tab_bar_background      ${colors.crust}
 
-    mark1_foreground #1e1e2e
-    mark1_background #b4befe
-    mark2_foreground #1e1e2e
-    mark2_background #cba6f7
-    mark3_foreground #1e1e2e
-    mark3_background #74c7ec
+      mark1_foreground ${colors.base}
+      mark1_background ${colors.lavender}
+      mark2_foreground ${colors.base}
+      mark2_background ${colors.mauve}
+      mark3_foreground ${colors.base}
+      mark3_background ${colors.sapphire}
 
-    # black
-    color0 #45475a
-    color8 #585b70
+      # black
+      color0 ${colors.surface1}
+      color8 ${colors.surface2}
 
-    # red
-    color1 #f38ba8
-    color9 #f38ba8
+      # red
+      color1 ${colors.red}
+      color9 ${colors.red}
 
-    # green
-    color2  #a6e3a1
-    color10 #a6e3a1
+      # green
+      color2  ${colors.green}
+      color10 ${colors.green}
 
-    # yellow
-    color3  #f9e2af
-    color11 #f9e2af
+      # yellow
+      color3  ${colors.yellow}
+      color11 ${colors.yellow}
 
-    # blue
-    color4  #89b4fa
-    color12 #89b4fa
+      # blue
+      color4  ${colors.blue}
+      color12 ${colors.blue}
 
-    # magenta
-    color5  #f5c2e7
-    color13 #f5c2e7
+      # magenta
+      color5  ${colors.pink}
+      color13 ${colors.pink}
 
-    # cyan
-    color6  #94e2d5
-    color14 #94e2d5
+      # cyan
+      color6  ${colors.teal}
+      color14 ${colors.teal}
 
-    # white
-    color7  #bac2de
-    color15 #a6adc8
+      # white
+      color7  ${colors.subtext1}
+      color15 ${colors.subtext0}
 
-    window_padding_width 5
+      window_padding_width 5
     '';
   };
 }

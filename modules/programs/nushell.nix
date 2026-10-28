@@ -1,19 +1,38 @@
-{ config, pkgs, ... }:
 {
-  home.packages = with pkgs; [ direnv ];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [ ./direnv.nix ];
 
-  programs.direnv = {
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.local/bin"
+    "${config.home.homeDirectory}/.cargo/bin"
+  ]
+  ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+    "/opt/homebrew/bin"
+    "/Applications/flutter/bin"
+  ];
+
+  programs.zoxide = {
     enable = true;
+    enableNushellIntegration = true;
   };
-  /*
-      def update-resume [] {
-        rm -f ~/Documents/impt/Alan_Fung_Resume.pdf
-        mv ~/Downloads/Alan_Fung_Resume.pdf ~/Documents/impt
-      }
-      */
+
+  programs.carapace = {
+    enable = true;
+    enableNushellIntegration = true;
+  };
 
   programs.nushell = {
     enable = true;
+    loadSessionVariables = true;
+    settings = {
+      show_banner = false;
+      buffer_editor = "nvim";
+    };
     shellAliases = {
       vi = "nvim";
       vim = "nvim";
@@ -27,36 +46,23 @@
       zed = "zeditor";
     };
     extraConfig = ''
-      source ~/.dots/modules/programs/nushell/catppuccin_mocha.nu
-      source ~/.zoxide.nu
-      source $"($nu.cache-dir)/carapace.nu"
+      source ${./nushell/catppuccin_mocha.nu}
 
       def hmsw [] {
         home-manager switch --flake $"($env.HOME)/.dots#(hostname | str replace '.local' "")"
       }
-    
+
+      def nixup [] {
+        nix flake update --flake $"($env.HOME)/.dots"
+      }
+
+      def nrsw [] {
+        sudo nixos-rebuild switch --flake $"($env.HOME)/.dots#(hostname | str replace '.local' "")"
+      }
+
     '';
     envFile.text = ''
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.nix-profile/bin")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"/nix/var/nix/profiles/default/bin")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"/opt/homebrew/bin")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"/Applications/flutter/bin")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.docker")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.local/bin")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.cargo/bin")
-      $env.PATH = ($env.PATH | split row (char esep) | prepend $"/usr/bin")
-
       $env.LS_COLORS = (vivid generate catppuccin-mocha)
-      $env.config = {
-        show_banner: false,
-        buffer_editor: "nvim",
-      }
-      mkdir $"($nu.cache-dir)"
-      carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
-
-      $env._ZO_DOCTOR = 0
-      zoxide init nushell | save -f ~/.zoxide.nu
-
       $env.VIRTUAL_ENV_DISABLE_PROMPT = 1
     '';
   };

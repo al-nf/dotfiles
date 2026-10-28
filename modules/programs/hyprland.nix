@@ -1,109 +1,159 @@
-{ config, pkgs, ... }:
+{ config, lib, ... }:
+let
+  desktop = import ../theme.nix;
+  lua = lib.generators.mkLuaInline;
+  bind = keys: dispatcher: {
+    _args = [
+      "SUPER + ${keys}"
+      (lua dispatcher)
+    ];
+  };
+  startupCommands = [
+    "hyprctl setcursor ${lib.escapeShellArg config.home.pointerCursor.name} ${toString config.home.pointerCursor.hyprcursor.size}"
+  ];
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "lua";
     settings = {
-      env = [
-        "HYPRCURSOR_THEME, rose-pine-hyprcursor"
-        "HYPRCURSOR_SIZE, 16"
+      on._args = [
+        "hyprland.start"
+        (lua ''
+          function()
+            ${lib.concatMapStringsSep "\n" (
+              command: "hl.exec_cmd(${lib.generators.toLua { } command})"
+            ) startupCommands}
+          end
+        '')
       ];
-      exec-once = [
-        "swww-daemon"
-        "swww-img ~/Pictures/walls/jingliu.png"
-        "hyprpanel"
-        "hyprctl setcursor rose-pine-hyprcursor 24"
-      ];
-      monitor =
-      [
-        "HDMI-A-1, 2560x1440@120, 0x0, 1"
-      ];
-      "$mod" = "SUPER";
-      bind =
-      [
-        "$mod, W, togglefloating"
-        "$mod, F, exec, zen"
-        "$mod, T, exec, kitty"
-        "$mod, Q, killactive"
-
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod, 0, workspace, 10"
-
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod SHIFT, 0, movetoworkspace, 10"
-
-        "$mod CTRL, 1, movetoworkspacesilent, 1"
-        "$mod CTRL, 2, movetoworkspacesilent, 2"
-        "$mod CTRL, 3, movetoworkspacesilent, 3"
-        "$mod CTRL, 4, movetoworkspacesilent, 4"
-        "$mod CTRL, 5, movetoworkspacesilent, 5"
-        "$mod CTRL, 6, movetoworkspacesilent, 6"
-        "$mod CTRL, 7, movetoworkspacesilent, 7"
-        "$mod CTRL, 8, movetoworkspacesilent, 8"
-        "$mod CTRL, 9, movetoworkspacesilent, 9"
-        "$mod CTRL, 0, movetoworkspacesilent, 10"
-
-
-        "$mod, A, exec, rofi -show drun"
-      ];
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
-      cursor = {
-        no_hardware_cursors = 1;
+      monitor = {
+        output = "HDMI-A-1";
+        mode = "2560x1440@120";
+        position = "0x0";
+        scale = 1;
       };
-      input = {
-        repeat_rate = 60;
-        repeat_delay = 200;
-      };
-      decoration = {
-        rounding = 10;
-        rounding_power = 2.5;
-
-        blur = {
-          enabled = true;
-          brightness = 1.0;
-          contrast = 1.0;
-          noise = 0.01;
-          vibrancy = 0.2;
-          vibrancy_darkness = 0.5;
-
-          passes = 2;
-          size = 7;
+      bind = [
+        (bind "W" "hl.dsp.window.float({ action = 'toggle' })")
+        (bind "SHIFT + W" "hl.dsp.exec_cmd('wayle panel settings')")
+        (bind "F" "hl.dsp.exec_cmd('zen-beta')")
+        (bind "T" "hl.dsp.exec_cmd('kitty')")
+        (bind "L" "hl.dsp.exec_cmd('petra-lm-lock')")
+        (bind "Q" "hl.dsp.window.close()")
+        (bind "left" "hl.dsp.focus({ direction = 'l' })")
+        (bind "right" "hl.dsp.focus({ direction = 'r' })")
+        (bind "up" "hl.dsp.focus({ direction = 'u' })")
+        (bind "down" "hl.dsp.focus({ direction = 'd' })")
+        (bind "A" "hl.dsp.exec_cmd('fuzzel')")
+        (bind "bracketright" "hl.dsp.exec_cmd('desktop-theme next')")
+        (bind "bracketleft" "hl.dsp.exec_cmd('desktop-theme previous')")
+        {
+          _args = [
+            "XF86AudioRaiseVolume"
+            (lua "hl.dsp.exec_cmd('wayle audio output-volume +5')")
+            {
+              repeating = true;
+              locked = true;
+            }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioLowerVolume"
+            (lua "hl.dsp.exec_cmd('wayle audio output-volume -5')")
+            {
+              repeating = true;
+              locked = true;
+            }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioMute"
+            (lua "hl.dsp.exec_cmd('wayle audio output-mute')")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioMicMute"
+            (lua "hl.dsp.exec_cmd('wayle audio input-mute')")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
+            "SUPER + mouse:272"
+            (lua "hl.dsp.window.drag()")
+            { mouse = true; }
+          ];
+        }
+        {
+          _args = [
+            "SUPER + mouse:273"
+            (lua "hl.dsp.window.resize()")
+            { mouse = true; }
+          ];
+        }
+      ]
+      ++ lib.concatMap (
+        workspace:
+        let
+          number = toString workspace;
+          key = if workspace == 10 then "0" else number;
+        in
+        [
+          (bind key "hl.dsp.focus({ workspace = ${number} })")
+          (bind "SHIFT + ${key}" "hl.dsp.window.move({ workspace = ${number}, follow = true })")
+          (bind "CTRL + ${key}" "hl.dsp.window.move({ workspace = ${number}, follow = false })")
+        ]
+      ) (lib.range 1 10);
+      config = {
+        cursor = {
+          no_hardware_cursors = 1;
         };
-        shadow = {
+        input = {
+          repeat_rate = 60;
+          repeat_delay = 200;
+        };
+        decoration = {
+          rounding = 10;
+          rounding_power = 2.5;
+
+          blur = {
+            enabled = true;
+            brightness = 1.0;
+            contrast = 1.0;
+            noise = 0.01;
+            vibrancy = 0.2;
+            vibrancy_darkness = 0.5;
+
+            passes = 2;
+            size = 7;
+          };
+          shadow = {
+            enabled = true;
+            range = 100;
+            render_power = 4;
+            color = "rgba(${lib.removePrefix "#" desktop.colors.shadow}ee)";
+            scale = 0.97;
+          };
+        };
+        animations = {
           enabled = true;
-          range = 100;
-          render_power = 4;
-          color = "rgba(1a1a1aee)";
-          scale = 0.97;
+        };
+        general = {
+          border_size = 2;
+          col = {
+            active_border = {
+              colors = map (color: "rgba(${lib.removePrefix "#" color}ee)") desktop.defaultTheme.colors;
+              angle = desktop.borderAngle;
+            };
+            inactive_border = "rgba(${lib.removePrefix "#" desktop.colors.inactiveBorder}aa)";
+          };
         };
       };
-      animations = {
-        enabled = true;
-      };
-      windowrule = [
+      window_rule = [
         {
           name = "default opacity";
           match.title = ".*";
@@ -136,12 +186,6 @@
           workspace = "special silent";
         }
       ];
-
-      general = {
-        border_size = 2;
-        "col.active_border" = "rgba(cceaffee) rgba(52b6ffee) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
-      };
     };
   };
 }

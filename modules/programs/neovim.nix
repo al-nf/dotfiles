@@ -3,16 +3,16 @@
 {
   programs.neovim = {
     enable = true;
+    withRuby = false;
+    withPython3 = false;
 
-    extraConfig =
-    ''
+    extraConfig = ''
 
     '';
   };
 
   home.file.".config/nvim" = {
-    source = ./neovim; 
+    source = ./neovim;
     recursive = true;
   };
 }
-

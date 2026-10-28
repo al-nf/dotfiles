@@ -1,64 +1,90 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./greeter.nix
+  ];
 
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.stable.overrideAttrs (previous: {
+      builder = pkgs.writeText "nvidia-builder.sh" (
+        let
+          originalBuilder = builtins.readFile previous.builder;
+          originalCommand = "patchelf --interpreter \"$(cat $NIX_CC/nix-support/dynamic-linker)\" \\\n                    --set-rpath $out/lib:$libPath $bin/bin/$i";
+        in
+        if lib.hasInfix originalCommand originalBuilder then
+          builtins.replaceStrings
+            [ originalCommand ]
+            [
+              ''
+                patchelf --set-rpath "$out/lib:$libPath" "$bin/bin/$i"
+                                patchelf --set-interpreter "$(cat "$NIX_CC/nix-support/dynamic-linker")" "$bin/bin/$i"
+              ''
+            ]
+            originalBuilder
+        else
+          throw "The NVIDIA patchelf workaround no longer matches the upstream builder. Check whether nixpkgs has fixed the issue before updating or removing the workaround in nixos/default.nix."
+      );
+    });
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      cudaPackages.cudatoolkit
-    ];
+  hardware.graphics.enable = true;
+
+  boot.loader = {
+    systemd-boot.enable = false;
+    efi.canTouchEfiVariables = true;
+    limine = {
+      enable = true;
+      secureBoot.enable = true;
+      biosDevice = "nodev";
+      efiSupport = true;
+      extraEntries = ''
+        /Windows
+          protocol: efi
+          path: boot():/EFI/Microsoft/Boot/bootmgfw.efi
+      '';
+      maxGenerations = 5;
+      style = {
+        interface = {
+          resolution = "1920x1080";
+          branding = "Petra";
+          brandingColor = "cba6f7";
+          helpColor = "a6adc8";
+          helpColorBright = "cba6f7";
+          helpHidden = true;
+        };
+        graphicalTerminal = {
+          font.scale = "2x2";
+          palette = "45475a;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;bac2de";
+          brightPalette = "585b70;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;a6adc8";
+          foreground = "cdd6f4";
+          background = "201e1e2e";
+          brightForeground = "1e1e2e";
+          brightBackground = "cba6f7";
+          margin = 80;
+          marginGradient = 8;
+        };
+        wallpapers = [ pkgs.nixos-artwork.wallpapers.catppuccin-mocha.gnomeFilePath ];
+      };
+    };
   };
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.limine.enable = true;
-  boot.loader.limine.secureBoot.enable = true;
-  boot.loader.limine.biosDevice = "nodev";
-  boot.loader.limine.efiSupport = true;
-  boot.loader.limine.extraEntries = ''
-    /Windows
-      protocol: efi
-      path: boot():/EFI/Microsoft/Boot/bootmgfw.efi
-  '';
-  boot.loader.limine.maxGenerations = 5;
-  boot.loader.limine.style.interface.resolution = "1920x1080";
-  boot.loader.limine.style.interface.helpHidden = true;
-  boot.loader.limine.style.wallpapers = [ pkgs.nixos-artwork.wallpapers.catppuccin-macchiato.gnomeFilePath ];
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "petra"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
+  networking.hostName = "petra";
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "America/Los_Angeles";
 
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -73,23 +99,15 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
 
-  # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -97,33 +115,16 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users = {
     afung = {
       isNormalUser = true;
       description = "Alan Fung";
       shell = pkgs.nushell;
-      extraGroups = [ "networkmanager" "wheel" "vboxusers"];
-      packages = with pkgs; [
-      ];
-    };
-    ericf = {
-      isNormalUser = true;
-      description = "Eric Fung";
-      shell = pkgs.bash;
-      extraGroups = [ "networkmanager" ];
-      packages = with pkgs; [
+      extraGroups = [
+        "networkmanager"
+        "wheel"
       ];
     };
   };
@@ -133,115 +134,76 @@
   programs.zsh.enable = true;
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true; 
+    remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
   };
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      stdenv.cc.cc.lib
-    ];
-  };
+  programs.nix-ld.enable = true;
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   nix.settings = {
-    experimental-features = ["nix-command" "flakes"];
-    trusted-users = [ "root" "afung" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      "afung"
+    ];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
     wget
-    firefox
     git
     home-manager
     efibootmgr
     gcc
     nushell
-    grub2
     fuse3
     sbctl
   ];
 
-  environment.sessionVariables.LD_LIBRARY_PATH = [
-    "${pkgs.stdenv.cc.cc.lib}/lib"
-    "${config.hardware.nvidia.package}/lib"
-  ];
+  services.logind.settings.Login.IdleAction = "ignore";
 
-  services.logind.settings.Login = {
-    IdleAction = "ignore";
-    IdleActionSec = "0";
-  };
+  services.ratbagd.enable = true;
+  services.lact.enable = true;
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  services.udev.extraRules = ''
+    ACTION=="add|change", SUBSYSTEM=="powercap", KERNEL=="intel-rapl:0", RUN+="${pkgs.coreutils}/bin/chmod a+r /sys%p/energy_uj"
+  '';
 
-  /*
-  virtualisation = {
-    virtualbox.host = {
-      enable = true;
-    };
-  };
-  */
-  
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    permitRootLogin = "yes";
-    passwordAuthentication = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
   };
 
-  # Enable Tailscale
   services.tailscale = {
     enable = true;
     extraUpFlags = "--accept-dns";
   };
 
   systemd.services.nvidia-gpu-init = {
-    description = "enable nvidia persistence mode and set power limit";
+    description = "Enable NVIDIA persistence mode and apply the 300 W power limit";
     wantedBy = [ "multi-user.target" ];
-    after = [ "nvidia-persistenced.service" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStartPre = ''
-        /run/current-system/sw/bin/nvidia-smi -pm 1
-      '';
-      ExecStart = ''
-        /run/current-system/sw/bin/nvidia-smi -pl 300
-      '';
+      RemainAfterExit = true;
+      ExecStartPre = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -pm 1";
+      ExecStart = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -pl 300";
     };
   };
 
-  services.displayManager.gdm.autoSuspend = false;
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
-
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = false;
+    AllowHibernation = false;
+    AllowHybridSleep = false;
+    AllowSuspendThenHibernate = false;
+  };
+  system.stateVersion = "25.05";
 }
-

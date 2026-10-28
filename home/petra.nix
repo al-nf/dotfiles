@@ -1,147 +1,161 @@
-{ config, pkgs, lib, helium, zen, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  zen,
+  ...
+}:
 let
-  py = (pkgs.python313.withPackages (
-    ps: with ps; [
-      gpustat
-    ]
-));
+  desktop = import ../modules/theme.nix;
+  wallpaperDirectory = "${config.home.homeDirectory}/${desktop.wallpaperDirectory}";
+  python = pkgs.python313.withPackages (packages: [ packages.gpustat ]);
 in
 {
-  imports = 
-  [
+  imports = [
     ../modules/programs/hyprland.nix
+    ../modules/programs/desktop-theme.nix
     ../modules/programs/nushell.nix
     ../modules/programs/starship.nix
-    ../modules/programs/hyprpanel.nix
     ../modules/programs/git.nix
-    ../modules/programs/rofi.nix
+    ../modules/programs/fuzzel.nix
     ../modules/programs/cava.nix
     ../modules/programs/kitty.nix
     ../modules/programs/neovim.nix
-    ../modules/programs/ollama.nix
     ../modules/programs/zed.nix
-    ../modules/programs/direnv.nix
   ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
   nix.package = lib.mkDefault pkgs.nix;
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "afung";
   home.homeDirectory = "/home/afung";
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "25.05"; # Please read the comment before changing.
+  home.stateVersion = "25.05";
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = with pkgs;[
+  home.pointerCursor = {
+    enable = true;
+    package = pkgs.rose-pine-hyprcursor;
+    name = "rose-pine-hyprcursor";
+    size = 24;
+    hyprcursor.enable = true;
+  };
+
+  home.packages = with pkgs; [
+    (callPackage ../packages/petra-lm { })
     fastfetch
     pavucontrol
+    piper
     ripgrep
     vivid
     btop
-    swww
     ffmpeg
     corefonts
-    rose-pine-hyprcursor
     nh
-    vesktop
-    papirus-icon-theme
+    tela-circle-icon-theme
     nerd-fonts.jetbrains-mono
-    zoxide
     fzf
-    carapace
     tailscale
     gnumake
-    rofi
     gh
-    vencord
+    discord
     mosh
     rustup
     devenv
-    zed-editor
     uv
     ruff
     unzip
-    gccNGPackages_15.libstdcxx
-    zlib
     bun
     zellij
     fd
-    ripgrep
     git-lfs
     nvtopPackages.nvidia
     desktop-file-utils
     olympus
     reptyr
     codex
+    bubblewrap
+    nixfmt
 
-    py
+    python
 
-    zen.packages.x86_64-linux.beta
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+    zen.packages.${pkgs.stdenv.hostPlatform.system}.beta
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/afung/etc/profile.d/hm-session-vars.sh
-  #
-  home.sessionVariables = {
-    #EDITOR = "vim";
-  };
-
   programs.home-manager.enable = true;
-  services.hyprpaper.enable = true;
+  xdg.configFile."wayle/styles/index.scss" = {
+    text = ".dashboard-dropdown .user-name { text-transform: none; }\n";
+    force = true;
+  };
+  services.wayle = {
+    enable = true;
+    settings = {
+      general.font-sans = desktop.font.family;
+      bar.background-opacity = 0;
+      bar.button-label-weight = "bold";
+      bar.layout = [
+        {
+          monitor = "HDMI-A-1";
+          left = [
+            "dashboard"
+            "hyprland-workspaces"
+            "media"
+          ];
+          center = [ "clock" ];
+          right = [
+            "idle-inhibit"
+            "systray"
+            "network"
+            "microphone"
+            "volume"
+            "notifications"
+          ];
+        }
+      ];
+      modules =
+        let
+          accentButton = {
+            border-color = "accent";
+            icon-bg-color = "accent";
+          };
+        in
+        lib.genAttrs [
+          "clock"
+          "media"
+          "idle-inhibit"
+          "network"
+          "microphone"
+          "volume"
+          "notifications"
+        ] (_: accentButton // { label-color = "accent"; })
+        // {
+          dashboard = accentButton // {
+            dropdown-lock-command = "petra-lm-lock";
+          };
+        };
+      wallpaper = {
+        engine-enabled = true;
+        transition-type = "fade";
+        transition-duration = 0.2;
+        cycling-enabled = false;
+        cycling-directory = wallpaperDirectory;
+        monitors = [
+          {
+            name = "HDMI-A-1";
+            wallpaper = "${wallpaperDirectory}/${desktop.defaultTheme.image}";
+            fit-mode = "fill";
+          }
+        ];
+      };
+    };
+  };
+
+  systemd.user.services.wayle.Unit = {
+    After = [ "awww.service" ];
+    Requires = [ "awww.service" ];
+  };
 
   xdg.desktopEntries.olympus = {
     name = "Olympus";
@@ -149,7 +163,10 @@ in
     exec = "steam-run olympus %u";
     icon = "olympus";
     terminal = false;
-    categories = [ "Game" "Application" ];
+    categories = [
+      "Game"
+      "Application"
+    ];
     mimeType = [ "x-scheme-handler/everest" ];
   };
 }
