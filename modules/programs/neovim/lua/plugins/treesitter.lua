@@ -5,7 +5,8 @@ return {
     build = ":TSUpdate",
     config = function()
         local treesitter = require("nvim-treesitter")
-        treesitter.setup({})
+        -- Prefer current parsers and queries over binaries left in the legacy plugin directory.
+        treesitter.setup({ install_dir = vim.fn.stdpath("data") .. "/site" })
         vim.treesitter.language.register("systemverilog", { "verilog", "systemverilog" })
         treesitter.install({ "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "systemverilog" })
 
