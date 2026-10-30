@@ -16,6 +16,7 @@ in
   imports = [
     ./common.nix
     ../modules/programs/ssh.nix
+    ../modules/programs/moonlight.nix
   ];
 
   home.homeDirectory = "/Users/afung";

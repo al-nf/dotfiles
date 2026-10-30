@@ -11,6 +11,7 @@ in
   imports = [
     ./hardware-configuration.nix
     ./greeter.nix
+    ./sunshine.nix
   ];
 
   hardware.nvidia = {
