@@ -45,10 +45,8 @@ in
     vivid
     btop
     ffmpeg
-    corefonts
     nh
     tela-circle-icon-theme
-    nerd-fonts.jetbrains-mono
     fzf
     tailscale
     gnumake

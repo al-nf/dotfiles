@@ -163,8 +163,6 @@ in
     home-manager
     efibootmgr
     gcc
-    nushell
-    fuse3
     sbctl
   ];
 

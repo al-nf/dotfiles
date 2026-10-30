@@ -5,6 +5,7 @@
 }:
 {
   imports = [
+    ./fonts.nix
     ../modules/programs/nushell.nix
     ../modules/programs/starship.nix
     ../modules/programs/git.nix

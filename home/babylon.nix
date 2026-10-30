@@ -28,14 +28,9 @@ in
     nh
     gh
     gcc
-    nerd-fonts.jetbrains-mono
-    vscode
-    lua
-    asm-lsp
     rustup
     go
     uv
-    virtualenv
     bun
     devenv
     libiconv
