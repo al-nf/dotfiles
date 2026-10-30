@@ -43,7 +43,6 @@ in
     nodejs
     clang-tools
     tailscale
-    hyperfine
     docker
     typst
     bear
@@ -55,7 +54,6 @@ in
     ocaml
     opam
     sqlite
-    ddgr
     sc-im
     tex
     codex
