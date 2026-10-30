@@ -4,6 +4,9 @@
   pkgs,
   ...
 }:
+let
+  desktop = import ../modules/theme.nix;
+in
 {
   imports = [
     ./hardware-configuration.nix
@@ -170,11 +173,63 @@
   services.ratbagd.enable = true;
   services.lact.enable = true;
 
-  services.udev.packages = [ pkgs.openrgb ];
+  services.udev.packages = [
+    pkgs.openrgb
+    (pkgs.writeTextFile {
+      name = "petra-keyboard-udev-rules";
+      destination = "/lib/udev/rules.d/70-petra-keyboard.rules";
+      text = ''
+        SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0c45", ATTRS{idProduct}=="50e4", TAG+="uaccess"
+      '';
+    })
+  ];
 
   services.udev.extraRules = ''
     ACTION=="add|change", SUBSYSTEM=="powercap", KERNEL=="intel-rapl:0", RUN+="${pkgs.coreutils}/bin/chmod a+r /sys%p/energy_uj"
+    SUBSYSTEM=="usb|hidraw", ATTRS{idVendor}=="0c45", ATTRS{idProduct}=="5004", GROUP="openrgb", MODE="0660"
+    SUBSYSTEM=="usb|hidraw", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c08b", GROUP="openrgb", MODE="0660"
   '';
+
+  users.groups.openrgb = { };
+  users.users.openrgb = {
+    isSystemUser = true;
+    group = "openrgb";
+  };
+
+  systemd.services.openrgb = {
+    description = "Peripheral RGB lighting and local theme control";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-udev-trigger.service" ];
+    environment = {
+      HOME = "/var/lib/openrgb";
+      XDG_CONFIG_HOME = "/var/lib/openrgb/.config";
+    };
+    serviceConfig = {
+      User = "openrgb";
+      Group = "openrgb";
+      StateDirectory = "openrgb";
+      WorkingDirectory = "/var/lib/openrgb";
+      ExecStartPre = "${pkgs.systemd}/bin/udevadm settle --timeout=10";
+      ExecStart = lib.escapeShellArgs [
+        (lib.getExe pkgs.openrgb)
+        "--config"
+        "/var/lib/openrgb"
+        "--server"
+        "--server-host"
+        "127.0.0.1"
+        "--mode"
+        "Static"
+        "--color"
+        (lib.removePrefix "#" (builtins.head desktop.defaultTheme.colors))
+      ];
+      Restart = "on-failure";
+      RestartSec = 2;
+      NoNewPrivileges = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+    };
+  };
 
   services.openssh = {
     enable = true;

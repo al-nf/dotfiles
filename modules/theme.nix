@@ -44,6 +44,10 @@ let
     {
       name = "arle0";
       image = "arle0.png";
+      keyboardColors = [
+        "#ff2010"
+        "#ff6050"
+      ];
       colors = [
         "#ff5544"
         "#ffaaaa"
@@ -52,6 +56,10 @@ let
     {
       name = "arle1";
       image = "arle1.png";
+      keyboardColors = [
+        "#ff2010"
+        "#ff6050"
+      ];
       colors = [
         "#ff5544"
         "#ffaaaa"
@@ -60,6 +68,10 @@ let
     {
       name = "arle2";
       image = "arle2.png";
+      keyboardColors = [
+        "#ff2010"
+        "#ff6050"
+      ];
       colors = [
         "#ff5544"
         "#ffaaaa"
@@ -68,6 +80,10 @@ let
     {
       name = "chisa0";
       image = "chisa0.png";
+      keyboardColors = [
+        "#ff2010"
+        "#ed44ff"
+      ];
       colors = [
         "#ff5544"
         "#ed44ff"
@@ -76,6 +92,10 @@ let
     {
       name = "hiyuki0";
       image = "hiyuki0.png";
+      keyboardColors = [
+        "#ff2010"
+        "#abbcda"
+      ];
       colors = [
         "#ff5544"
         "#abbcda"
@@ -84,6 +104,10 @@ let
     {
       name = "hiyuki1";
       image = "hiyuki1.png";
+      keyboardColors = [
+        "#ff2010"
+        "#abbcda"
+      ];
       colors = [
         "#ff5544"
         "#abbcda"
@@ -96,6 +120,14 @@ in
   defaultTheme = builtins.head (builtins.filter (theme: theme.name == defaultThemeName) themes);
   wallpaperDirectory = "Pictures/walls";
   borderAngle = 45;
+  rgbTransitionDuration = 0.4;
+  keyboardLighting = {
+    backgroundBrightness = 0.65;
+    highlightBrightness = 1.0;
+    whitePoint = "#f0ffff";
+    fadeMilliseconds = 800;
+    radius = 26;
+  };
 
   font = {
     family = "JetBrainsMono Nerd Font";

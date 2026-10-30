@@ -1,0 +1,50 @@
+diff --git a/drivers/led/sn32f2xx.c b/drivers/led/sn32f2xx.c
+--- a/drivers/led/sn32f2xx.c
++++ b/drivers/led/sn32f2xx.c
+@@ -86,5 +86,5 @@
+-#if (DIODE_DIRECTION == ROW2COL)
++#if (DIODE_DIRECTION == ROW2COL) && (SN32F2XX_PWM_DIRECTION == ROW2COL)
+ static matrix_row_t row_shifter = MATRIX_ROW_SHIFTER;
+ #endif
+ #if defined(SHARED_MATRIX)
+ extern matrix_row_t  raw_matrix[MATRIX_ROWS];    // raw values
+@@ -330,7 +330,7 @@ static void shared_matrix_scan_keys(matrix_row_t current_matrix[], uint8_t current
+             // For each col...
+             matrix_row_t row_shifter = MATRIX_ROW_SHIFTER;
+             for (uint8_t col_index = 0; col_index < MATRIX_COLS; col_index++, row_shifter <<= 1) {
+-                matrix_read_rows_on_col(current_matrix, current_key, row_shifter);
++                matrix_read_rows_on_col(current_matrix, col_index, row_shifter);
+             }
+ #        endif // SN32F2XX_PWM_DIRECTION
+ #    endif     // DIODE_DIRECTION
+@@ -393,9 +383,10 @@ static void update_pwm_channels(PWMDriver *pwmp) {
+     bool enable_pwm_output = false;
+     for (uint8_t current_key_col = 0; current_key_col < SN32F2XX_RGB_MATRIX_COLS; current_key_col++) {
+         uint8_t led_index = g_led_config.matrix_co[current_key_row][current_key_col];
+-#    if (SN32F2XX_PWM_CONTROL == SOFTWARE_PWM)
+-        if (led_index >= SN32F2XX_LED_COUNT) continue;
+-#    endif // SN32F2XX_PWM_CONTROL
++        if (led_index >= SN32F2XX_LED_COUNT) {
++            pwmEnableChannelI(pwmp, chan_col_order[current_key_col], 0);
++            continue;
++        }
+         // Check if we need to enable RGB output
+         if (led_state[led_index].b > 0) enable_pwm_output |= true;
+         if (led_state[led_index].g > 0) enable_pwm_output |= true;
+@@ -404,13 +395,13 @@ static void update_pwm_channels(PWMDriver *pwmp) {
+ #    if (SN32F2XX_PWM_CONTROL == HARDWARE_PWM)
+         switch (current_row % SN32F2XX_RGB_MATRIX_ROW_CHANNELS) {
+             case 0:
+-                pwmEnableChannel(pwmp, chan_col_order[current_key_col], led_state[led_index].b);
++                pwmEnableChannelI(pwmp, chan_col_order[current_key_col], led_state[led_index].b);
+                 break;
+             case 1:
+-                pwmEnableChannel(pwmp, chan_col_order[current_key_col], led_state[led_index].g);
++                pwmEnableChannelI(pwmp, chan_col_order[current_key_col], led_state[led_index].g);
+                 break;
+             case 2:
+-                pwmEnableChannel(pwmp, chan_col_order[current_key_col], led_state[led_index].r);
++                pwmEnableChannelI(pwmp, chan_col_order[current_key_col], led_state[led_index].r);
+                 break;
+             default:;
+         }

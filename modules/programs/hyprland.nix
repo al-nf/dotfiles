@@ -172,6 +172,7 @@ in
           name = "tile kitty";
           match.class = "kitty";
           tile = true;
+          opacity = "0.7 0.7";
         }
         {
           name = "spotify";

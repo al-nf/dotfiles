@@ -1,0 +1,86 @@
+{
+  "hardware": {
+    "model": "Redragon Devarajas K556 RGB",
+    "pcb": "8179-Q US V7",
+    "pcb_date": "2018-11-21",
+    "reported_chip_marking": "VS11K09A-1",
+    "diagnostic_chip_family": "SN32F24XB",
+    "rom_bytes": 65536,
+    "stock_security_level": "CS1",
+    "last_observed_stock_flash_checksum": "0x1529",
+    "previous_flash_checksum": "0x9cdf",
+    "checksum_note": "User repeated info-only query and reported 0x1529, matching candidate; reason for earlier difference unknown"
+  },
+  "candidate_recovery": {
+    "file": "candidate-stock-k556-240b.bin",
+    "repository": "https://github.com/SonixQMK/Mechanical-Keyboard-Database",
+    "revision": "13f78cb0292675f202218f1e7249bc2bd83a1ee8",
+    "path": "stockFWs/Redragon/240B/Redragon_K556_RGB_240B.bin",
+    "bytes": 65536,
+    "sha256": "3ad8560482ecaacb62691b54dac808abe7d45c80d70d5d7fe0a00e6e46e0657e",
+    "additive_checksum": "0x1529",
+    "status": "community archive candidate, not a dump of this keyboard; matches latest reported 16-bit flash checksum, restoration not tested"
+  },
+  "qmk": {
+    "repository": "https://github.com/SonixQMK/qmk_firmware",
+    "branch": "sn32_develop",
+    "revision": "62973ee48a976c6f7cc6d4f7b198bd48a2fdfe60",
+    "target": "redragon/k556:default",
+    "build": {
+      "file": "qmk-k556-default.bin",
+      "compiler": "GNU Arm Embedded 13.3.Rel1",
+      "bytes": 65536,
+      "reported_section_bytes": 40078,
+      "vector_address": "0x00000000",
+      "end_flag_address": "0x0000fffc",
+      "sha256": "c7bafaa1b114c6d8cbe97bba562b8d9d2bf20d40e466ff42b25b5a677395b8f7",
+      "additive_checksum": "0xa4b7",
+      "status": "user reported successful flash, matching checksum, working keys and combinations; default RGB effect runs"
+    },
+    "custom_build": {
+      "target": "redragon/k556:petra",
+      "file": "qmk-k556-petra.bin",
+      "bytes": 65536,
+      "sha256": "e79a8d95f2f5815886b6ba9babc910eff72948949b136b1cce1a524f35700af1",
+      "additive_checksum": "0x00cb",
+      "default_colors": [
+        20,
+        46,
+        64,
+        153,
+        176,
+        191
+      ],
+      "settings": {
+        "backgroundBrightness": 0.25,
+        "fadeMilliseconds": 800,
+        "highlightBrightness": 0.75,
+        "radius": 26
+      },
+      "status": "user flashed successfully; keys, combinations, and reactive effect work; mixed-color accuracy and brightness under investigation"
+    },
+    "scan_test_build": {
+      "target": "redragon/k556:petra_scan",
+      "file": "qmk-k556-petra-scan.bin",
+      "bytes": 65536,
+      "sha256": "280442a666437ba88e690f70f30bc385e82f26bd791c57edbeae04995b3a3539",
+      "additive_checksum": "0x692e",
+      "default_colors": [
+        82,
+        182,
+        255,
+        204,
+        234,
+        255
+      ],
+      "settings": {
+        "backgroundBrightness": 1.0,
+        "fadeMilliseconds": 800,
+        "highlightBrightness": 1.0,
+        "radius": 26
+      },
+      "status": "user flashed checksum 0x692e; confirmed green output and working typing; accepted white point #f0ffff",
+      "driver_patch_sha256": "f7f1ad391fd277be55d49896bab48da8e422b181652a2a84bebfe075f5621a52"
+    }
+  }
+}

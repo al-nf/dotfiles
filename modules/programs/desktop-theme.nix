@@ -23,12 +23,15 @@ let
   definitions = pkgs.writeText "desktop-themes.json" (
     builtins.toJSON {
       default = desktop.defaultThemeName;
+      inherit (desktop) rgbTransitionDuration keyboardLighting;
       commands = {
         wayle = lib.getExe pkgs.wayle;
         hyprctl = lib.getExe' pkgs.hyprland "hyprctl";
       };
       themes = map (theme: {
         inherit (theme) name;
+        lightingColors = theme.colors;
+        keyboardColors = theme.keyboardColors or theme.colors;
         wallpaper = "${config.home.homeDirectory}/${desktop.wallpaperDirectory}/${theme.image}";
         palette = palette // {
           primary = builtins.head theme.colors;
