@@ -134,6 +134,45 @@ in
     size = 12;
   };
 
+  spacing = {
+    borderWidth = 2;
+    windowGaps = {
+      inner = 5;
+      outer = 20;
+    };
+    cornerRadius = {
+      window = 10;
+      launcher = 14;
+      selection = 8;
+    };
+    # Kitty measures padding in points; Fuzzel uses pixels with dpi-aware disabled.
+    terminalPadding = 5;
+    launcherPadding = {
+      horizontal = 20;
+      vertical = 14;
+      inner = 10;
+    };
+    # Wayle uses scale-relative spacing and named corner sizes.
+    bar = {
+      inset-edge = 0.0;
+      inset-ends = 0.0;
+      padding = 0.35;
+      padding-ends = 0.5;
+      module-gap = 0.5;
+      border-width = 1;
+      rounding = "none";
+      button-icon-padding = 1.0;
+      button-label-padding = 1.0;
+      button-gap = 1.0;
+      button-rounding = "sm";
+      button-border-width = 1;
+      button-group-border-width = 1;
+      button-group-padding = 0.0;
+      button-group-module-gap = 0.25;
+      button-group-rounding = "sm";
+    };
+  };
+
   colors = {
     base = "#1e1e2e";
     mantle = "#181825";

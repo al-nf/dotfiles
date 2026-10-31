@@ -18,9 +18,9 @@ in
         hide-before-typing = true;
         width = 38;
         lines = 11;
-        horizontal-pad = 20;
-        vertical-pad = 14;
-        inner-pad = 10;
+        horizontal-pad = desktop.spacing.launcherPadding.horizontal;
+        vertical-pad = desktop.spacing.launcherPadding.vertical;
+        inner-pad = desktop.spacing.launcherPadding.inner;
         layer = "top";
       };
       colors = {
@@ -36,9 +36,9 @@ in
         border = rgba strongAccent "cc";
       };
       border = {
-        width = 2;
-        radius = 14;
-        selection-radius = 8;
+        width = desktop.spacing.borderWidth;
+        radius = desktop.spacing.cornerRadius.launcher;
+        selection-radius = desktop.spacing.cornerRadius.selection;
       };
     };
   };

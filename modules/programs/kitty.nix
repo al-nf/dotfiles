@@ -83,7 +83,7 @@ in
       color7  ${colors.subtext1}
       color15 ${colors.subtext0}
 
-      window_padding_width 5
+      window_padding_width ${toString desktop.spacing.terminalPadding}
     '';
   };
 }

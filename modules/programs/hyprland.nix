@@ -126,7 +126,7 @@ in
           repeat_delay = 200;
         };
         decoration = {
-          rounding = 10;
+          rounding = desktop.spacing.cornerRadius.window;
           rounding_power = 2.5;
 
           blur = {
@@ -152,7 +152,9 @@ in
           enabled = true;
         };
         general = {
-          border_size = 2;
+          gaps_in = desktop.spacing.windowGaps.inner;
+          gaps_out = desktop.spacing.windowGaps.outer;
+          border_size = desktop.spacing.borderWidth;
           col = {
             active_border = {
               colors = map (color: "rgba(${lib.removePrefix "#" color}ee)") desktop.defaultTheme.colors;

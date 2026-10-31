@@ -17,27 +17,29 @@ in
     enable = true;
     settings = {
       general.font-sans = desktop.font.family;
-      bar.background-opacity = 0;
-      bar.button-label-weight = "bold";
-      bar.layout = [
-        {
-          monitor = desktopMonitor.output;
-          left = [
-            "dashboard"
-            "hyprland-workspaces"
-            "media"
-          ];
-          center = [ "clock" ];
-          right = [
-            "idle-inhibit"
-            "systray"
-            "network"
-            "microphone"
-            "volume"
-            "notifications"
-          ];
-        }
-      ];
+      bar = desktop.spacing.bar // {
+        background-opacity = 0;
+        button-label-weight = "bold";
+        layout = [
+          {
+            monitor = desktopMonitor.output;
+            left = [
+              "dashboard"
+              "hyprland-workspaces"
+              "media"
+            ];
+            center = [ "clock" ];
+            right = [
+              "idle-inhibit"
+              "systray"
+              "network"
+              "microphone"
+              "volume"
+              "notifications"
+            ];
+          }
+        ];
+      };
       modules =
         let
           accentButton = {
