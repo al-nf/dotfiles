@@ -210,6 +210,54 @@ To roll back, enter the bootloader with Fn+Esc and flash the preserved
 Its checksum remains `0x00cb`. If Fn+Esc fails, physical recovery remains
 unverified; do not short unidentified pads or blindly retry failed flashes.
 
+### Immediate-key-down debounce test
+
+Inside the same development shell, build a separate input-latency experiment:
+
+```sh
+python3 tools/keyboard-rgb/firmware/build.py --debounce-test
+```
+
+This builds `redragon/k556:petra_latency` and saves
+`qmk-k556-petra-latency.bin`. It keeps the corrected color-separated scan,
+keymap, reactive effect, HID theme protocol, and default 1 ms USB polling. It
+changes debounce from `sym_defer_g` to `asym_eager_defer_pk`, explicitly retaining
+a 5 ms window. Presses are accepted immediately upon raw detection; releases
+are deferred, and each key has its own debounce state. This removes the
+intentional key-down settling wait, not the time until the matrix is sampled
+or the USB report reaches the host. No measured end-to-end latency claim is
+made. Eager presses are less resistant to electrical noise.
+
+The build includes the actual `asym_eager_defer_pk.o` implementation and links
+successfully with 37,262 loadable section bytes in a 65,536-byte image. Existing
+main/process stack reservations are unchanged; the ELF heap region is 564
+bytes. Sanitized native tests of the upstream debounce implementation cover
+immediate presses, press-bounce suppression, deferred releases, independent
+keys, and timer wraparound. Scan, rendering, and host protocol tests remain
+separate from physical validation.
+
+The last working color-scan firmware is preserved as
+`qmk-k556-petra-scan.bin` (checksum `0x692e`). This experiment does not overwrite
+that image or its metadata. No NixOS or Home Manager switch is needed.
+
+After Fn+Esc and confirming bootloader `0c45:7040`, flash the test image with
+this single line in Nushell:
+
+```nu
+sudo /tmp/petra-sonixflasher-3.0.0/sonixflasher --vid-pid "0c45/7040" --file "/home/afung/.dots/tools/keyboard-rgb/firmware/qmk-k556-petra-latency.bin" --offset 0
+```
+
+Compare the verified checksum against `qmk.latency_test_build.additive_checksum`
+in `sources.json`. Do not unplug during flashing. After success, test every key,
+fast typing, quick repeated presses of the same key, and press/release of held
+modifiers. Watch for duplicate characters, phantom presses, missed repeats, or
+stuck keys; run `desktop-theme restore` to restore the same lighting settings
+used before the flash. Keep conditions consistent for any latency comparison.
+
+If the test is unreliable, use Fn+Esc and the same flash command with
+`qmk-k556-petra-scan.bin` instead; expect checksum `0x692e`. Physical bootloader
+recovery remains unverified if the keyboard cannot enter it normally.
+
 ### Activation and flashing
 
 The NixOS change adds `70-petra-keyboard.rules`, granting the active local user

@@ -81,6 +81,34 @@
       },
       "status": "user flashed checksum 0x692e; confirmed green output and working typing; accepted white point #f0ffff",
       "driver_patch_sha256": "f7f1ad391fd277be55d49896bab48da8e422b181652a2a84bebfe075f5621a52"
+    },
+    "latency_test_build": {
+      "target": "redragon/k556:petra_latency",
+      "file": "qmk-k556-petra-latency.bin",
+      "bytes": 65536,
+      "sha256": "73c628e1d6af4aac80f357812a96d94aa885a91372dae3ed768d3d3e15752d63",
+      "additive_checksum": "0x1608",
+      "default_colors": [
+        50,
+        118,
+        166,
+        192,
+        234,
+        255
+      ],
+      "settings": {
+        "backgroundBrightness": 0.65,
+        "fadeMilliseconds": 800,
+        "highlightBrightness": 1.0,
+        "radius": 26,
+        "whitePoint": "#f0ffff"
+      },
+      "status": "built only; not flashed or hardware-validated",
+      "driver_patch_sha256": "f7f1ad391fd277be55d49896bab48da8e422b181652a2a84bebfe075f5621a52",
+      "debounce": {
+        "algorithm": "asym_eager_defer_pk",
+        "milliseconds": 5
+      }
     }
   }
 }

@@ -16,6 +16,7 @@ in
 
   hardware.nvidia = {
     modesetting.enable = true;
+    powerManagement.enable = true;
     open = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable.overrideAttrs (previous: {
       builder = pkgs.writeText "nvidia-builder.sh" (
@@ -256,7 +257,7 @@ in
   };
 
   systemd.sleep.settings.Sleep = {
-    AllowSuspend = false;
+    AllowSuspend = true;
     AllowHibernation = false;
     AllowHybridSleep = false;
     AllowSuspendThenHibernate = false;

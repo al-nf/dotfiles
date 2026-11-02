@@ -92,6 +92,34 @@ in
         }
         {
           _args = [
+            "XF86AudioStop"
+            (lua "hl.dsp.exec_cmd('playerctl stop')")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioPrev"
+            (lua "hl.dsp.exec_cmd('playerctl previous')")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioPlay"
+            (lua "hl.dsp.exec_cmd('playerctl play-pause')")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioNext"
+            (lua "hl.dsp.exec_cmd('playerctl next')")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
             "SUPER + mouse:272"
             (lua "hl.dsp.window.drag()")
             { mouse = true; }

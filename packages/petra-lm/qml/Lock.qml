@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import Quickshell.Services.Pam
 import Quickshell.Wayland
 
@@ -16,6 +17,7 @@ ShellRoot {
     property string message: ""
     property string pendingResponse: ""
     property bool hasPendingResponse: false
+    property bool suspendPending: Quickshell.env("PETRA_LM_SUSPEND") === "1"
 
     signal clearPassword()
     signal automaticAttemptFinished()
@@ -105,9 +107,24 @@ ShellRoot {
         }
     }
 
+    Process {
+        id: suspendProcess
+        command: [Quickshell.env("PETRA_LM_SYSTEMCTL") || "/run/current-system/sw/bin/systemctl", "suspend"]
+        onExited: (exitCode, exitStatus) => {
+            if (exitCode !== 0)
+                root.message = "Couldn’t suspend. Check system permissions and sleep settings.";
+        }
+    }
+
     WlSessionLock {
         id: sessionLock
         locked: true
+        onSecureChanged: {
+            if (secure && root.suspendPending) {
+                root.suspendPending = false;
+                suspendProcess.running = true;
+            }
+        }
 
         WlSessionLockSurface {
             color: "#11111b"

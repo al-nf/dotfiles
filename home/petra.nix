@@ -26,6 +26,15 @@ in
 
   home.homeDirectory = "/home/afung";
 
+  programs.nushell.extraConfig = ''
+    def suspend [] {
+      ^suspend
+      if $env.LAST_EXIT_CODE == 0 {
+        exit
+      }
+    }
+  '';
+
   home.pointerCursor = {
     enable = true;
     package = pkgs.rose-pine-hyprcursor;
@@ -38,6 +47,7 @@ in
     (callPackage ../packages/petra-lm { })
     fastfetch
     pavucontrol
+    playerctl
     piper
     openrgb
     hyprshot

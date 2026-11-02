@@ -4,6 +4,7 @@
   symlinkJoin,
   writeShellApplication,
   quickshell,
+  systemd,
   util-linux,
 }:
 let
@@ -29,11 +30,23 @@ let
         ${lib.getExe quickshell} --no-duplicate --path ${interface}/qml/Lock.qml
     '';
   };
+  suspend = writeShellApplication {
+    name = "suspend";
+    text = ''
+      exec ${lib.getExe' systemd "systemd-run"} --user --collect --quiet \
+        --unit=petra-suspend --service-type=exec \
+        --setenv="WAYLAND_DISPLAY=''${WAYLAND_DISPLAY:?Run suspend from a Wayland session.}" \
+        --setenv=PETRA_LM_SUSPEND=1 \
+        --setenv=PETRA_LM_SYSTEMCTL=${lib.getExe' systemd "systemctl"} \
+        ${lib.getExe' lock "petra-lm-lock"}
+    '';
+  };
 in
 symlinkJoin {
   name = "petra-lm";
   paths = [
     greeter
     lock
+    suspend
   ];
 }
