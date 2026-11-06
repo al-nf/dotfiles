@@ -29,8 +29,9 @@ in
       base_keymap = "VSCode";
       vim_mode = true;
       relative_line_numbers = "enabled";
+      ui_font_family = desktop.font.family;
       ui_font_size = 16;
-      buffer_font_family = desktop.font.family;
+      buffer_font_family = desktop.font.editorFamily;
       buffer_font_size = 15;
 
       theme = {
