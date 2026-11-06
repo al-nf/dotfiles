@@ -38,7 +38,10 @@ in
     fzf
     nodejs
     clang-tools
-    tailscale
+    (writeShellScriptBin "tailscale" ''
+      export TAILSCALE_BE_CLI=1
+      exec /Applications/Tailscale.app/Contents/MacOS/Tailscale "$@"
+    '')
     docker
     typst
     bear
