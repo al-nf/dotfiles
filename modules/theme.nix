@@ -131,7 +131,7 @@ in
   };
 
   font = {
-    family = "JetBrainsMono Nerd Font";
+    family = "Maple Mono NF";
     size = 12;
   };
 
