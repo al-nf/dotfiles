@@ -109,6 +109,35 @@
         "algorithm": "asym_eager_defer_pk",
         "milliseconds": 5
       }
+    },
+    "latency_test_build_startup": {
+      "target": "redragon/k556:petra_latency_startup",
+      "file": "qmk-k556-petra-latency-startup.bin",
+      "bytes": 65536,
+      "sha256": "df5cf7325fe1237905a98a9115cf5cf5e6dc7faf3a3f643e25aa8c5a88cec0c8",
+      "additive_checksum": "0xf00a",
+      "default_colors": [
+        124,
+        108,
+        161,
+        191,
+        166,
+        247
+      ],
+      "settings": {
+        "backgroundBrightness": 0.65,
+        "fadeMilliseconds": 800,
+        "highlightBrightness": 1.0,
+        "radius": 26,
+        "whitePoint": "#f0ffff"
+      },
+      "status": "built only; not flashed or hardware-validated",
+      "startup_color": "#cba6f7",
+      "driver_patch_sha256": "f7f1ad391fd277be55d49896bab48da8e422b181652a2a84bebfe075f5621a52",
+      "debounce": {
+        "algorithm": "asym_eager_defer_pk",
+        "milliseconds": 5
+      }
     }
   }
 }

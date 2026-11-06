@@ -121,6 +121,7 @@ in
   wallpaperDirectory = "Pictures/walls";
   borderAngle = 45;
   rgbTransitionDuration = 0.4;
+  peripheralDefaultColor = "#cba6f7";
   keyboardLighting = {
     backgroundBrightness = 0.65;
     highlightBrightness = 1.0;

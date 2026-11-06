@@ -258,6 +258,45 @@ If the test is unreliable, use Fn+Esc and the same flash command with
 `qmk-k556-petra-scan.bin` instead; expect checksum `0x692e`. Physical bootloader
 recovery remains unverified if the keyboard cannot enter it normally.
 
+### Purple reactive startup lighting for Windows
+
+`modules/theme.nix` declares `peripheralDefaultColor` as mauve (`#cba6f7`).
+The NixOS OpenRGB service uses this at startup, before the desktop theme is
+restored. For the keyboard, build a separate image in the firmware build shell:
+
+```sh
+python3 tools/keyboard-rgb/firmware/build.py --debounce-test --peripheral-default
+```
+
+This saves `qmk-k556-petra-latency-startup.bin`, preserving the previous images.
+Both background and highlight use mauve, with the configured 65% background
+brightness and 100% reactive highlights, plus the existing keyboard-only
+white-point correction. Fade duration and radius remain unchanged. The keymap,
+low-latency debounce, and color-separated scan are unchanged. Building does not
+flash the keyboard. After flashing, this reactive startup effect also works in
+Windows without host software. Linux theme updates still override these colors.
+
+Use Fn+Esc to enter the keyboard bootloader and confirm `0c45:7040` with
+`sonixflasher --list-connected` before flashing. Then run this single line in
+Nushell:
+
+```nu
+sudo /tmp/petra-sonixflasher-3.0.0/sonixflasher --vid-pid "0c45/7040" --file "/home/afung/.dots/tools/keyboard-rgb/firmware/qmk-k556-petra-latency-startup.bin" --offset 0
+```
+
+The initial purple-reactive build has checksum `0xf00a`; compare future builds
+against `qmk.latency_test_build_startup.additive_checksum` in `sources.json`.
+Do not unplug during flashing. A Home Manager theme restore will replace the
+purple colors on Linux; Windows needs no lighting service for this effect.
+
+The G502 has separate onboard memory: save a static `cba6f7` color to both LED
+zones in its onboard profile. Linux OpenRGB updates are temporary and are not
+a substitute for that stored profile. Windows lighting software can override
+the profile, so disable its lighting overrides if the saved color should remain.
+The enabled profile's two LED colors were set to `cba6f7` with ratbagctl; a
+before/after readback showed no changes to DPI, report rate, or button mappings.
+Persistence across an actual Windows boot has not yet been verified.
+
 ### Activation and flashing
 
 The NixOS change adds `70-petra-keyboard.rules`, granting the active local user

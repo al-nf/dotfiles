@@ -19,6 +19,10 @@ def main():
         description="Build Petra's K556 firmware without flashing"
     )
     parser.add_argument("--source", type=Path, default=Path("/tmp/petra-sonixqmk"))
+    parser.add_argument(
+        "--peripheral-default", action="store_true",
+        help="Boot with the shared peripheral color and reactive lighting"
+    )
     profiles = parser.add_mutually_exclusive_group()
     profiles.add_argument(
         "--scan-test", action="store_true", help="Build the color-separated scan profile"
@@ -44,9 +48,11 @@ def main():
     desktop = json.loads(
         output("nix", "eval", "--json", "--file", str(REPOSITORY / "modules/theme.nix"))
     )
-    settings = desktop["keyboardLighting"]
+    settings = desktop["keyboardLighting"].copy()
     client = runpy.run_path(str(REPOSITORY / "modules/programs/desktop-theme.py"))
     default_theme = desktop["defaultTheme"]
+    if arguments.peripheral_default:
+        default_theme = {"colors": [desktop["peripheralDefaultColor"]]}
     colors = client["keyboard_palette"](
         {"keyboardColors": default_theme.get("keyboardColors", default_theme["colors"])},
         settings,
@@ -65,6 +71,10 @@ def main():
         keymap = "petra"
         filename = "qmk-k556-petra.bin"
         metadata_key = "custom_build"
+    if arguments.peripheral_default:
+        keymap += "_startup"
+        filename = filename.replace(".bin", "-startup.bin")
+        metadata_key += "_startup"
     destination = source / "keyboards/redragon/k556/keymaps" / keymap
     destination.mkdir(exist_ok=True)
     for path in (DIRECTORY / "petra").iterdir():
@@ -121,6 +131,8 @@ def main():
         "settings": settings,
         "status": "built only; not flashed or hardware-validated",
     }
+    if arguments.peripheral_default:
+        metadata["qmk"][metadata_key]["startup_color"] = desktop["peripheralDefaultColor"]
     if use_color_scan:
         metadata["qmk"][metadata_key]["driver_patch_sha256"] = hashlib.sha256(
             driver_patch.read_bytes()

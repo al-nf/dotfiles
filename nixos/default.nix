@@ -220,7 +220,7 @@ in
         "--mode"
         "Static"
         "--color"
-        (lib.removePrefix "#" (builtins.head desktop.defaultTheme.colors))
+        (lib.removePrefix "#" desktop.peripheralDefaultColor)
       ];
       Restart = "on-failure";
       RestartSec = 2;
@@ -242,7 +242,11 @@ in
 
   services.tailscale = {
     enable = true;
-    extraUpFlags = "--accept-dns";
+    useRoutingFeatures = "server";
+    extraSetFlags = [
+      "--accept-dns"
+      "--advertise-exit-node"
+    ];
   };
 
   systemd.services.nvidia-gpu-init = {
